@@ -7,9 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import ua.edu.knightandwarrior.model.Army;
-import ua.edu.knightandwarrior.model.Knight;
-import ua.edu.knightandwarrior.model.Warrior;
+import ua.edu.knightandwarrior.model.*;
 import ua.edu.knightandwarrior.service.Battle;
 
 import java.util.List;
@@ -20,11 +18,15 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 class BattleTest {
     private Warrior warrior;
     private Warrior knight;
+    private Defender defender;
+    private Rookie rookie;
 
     @BeforeEach
     public void setupTest() {
         knight = new Knight();
         warrior = new Warrior();
+        defender = new Defender();
+        rookie = new Rookie();
     }
 
     @ParameterizedTest(name = "{index}. Fight {0} fight against {1}, expected result = {2}")
@@ -51,7 +53,28 @@ class BattleTest {
     }
 
     @Test
-    @DisplayName("Three warriors fight")
+    @DisplayName("Defender vs rookie and warrior expected true")
+    void testDefenderAndRookieAndWarriorFight(){
+        //when
+        Battle.fight(defender,rookie);
+        var test = Battle.fight(defender,warrior);
+
+        //then
+        assertTrue(test);
+    }
+
+    @Test
+    @DisplayName("Defender vs rookie expected 60")
+    void testDefenderVSRookie_health(){
+        //when
+        Battle.fight(defender,rookie);
+
+        //then
+        assertEquals(defender.getHealth(),60);
+    }
+
+    @Test
+    @DisplayName("Three warriors fight expected false")
     void testThreeWarriorsFight(){
         //when
         Battle.fight(warrior,knight);
@@ -103,6 +126,34 @@ class BattleTest {
                                 .addUnits(Warrior::new, 11),
                         new Army()
                                 .addUnits(Warrior::new, 7),
-                        true));
+                        true),
+                arguments(new Army()
+                                .addUnits(Warrior::new, 5)
+                                .addUnits(Defender::new, 4)
+                                .addUnits(Defender::new, 5),
+                        new Army()
+                                .addUnits(Warrior::new, 4),
+                        true),
+                arguments(new Army()
+                                .addUnits(Defender::new, 5)
+                                .addUnits(Warrior::new, 20)
+                                .addUnits(Defender::new, 4),
+                        new Army()
+                                .addUnits(Warrior::new, 21),
+                        true),
+                arguments(new Army()
+                                .addUnits(Defender::new, 5)
+                                .addUnits(Warrior::new, 10)
+                                .addUnits(Defender::new, 10),
+                        new Army()
+                                .addUnits(Warrior::new, 5),
+                        true),
+                arguments(new Army()
+                                .addUnits(Defender::new, 2)
+                                .addUnits(Warrior::new, 1)
+                                .addUnits(Defender::new, 1),
+                        new Army()
+                                .addUnits(Warrior::new, 5),
+                        false));
     }
 }
