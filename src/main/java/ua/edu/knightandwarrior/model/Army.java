@@ -2,10 +2,7 @@ package ua.edu.knightandwarrior.model;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class Army {
@@ -64,25 +61,31 @@ public class Army {
         return this;
     }
 
-    public Warrior getWarriorByIndex(int index) throws IndexOutOfBoundsException {
-        if (index < 0 || index >= size()){
-            throw new IndexOutOfBoundsException("Index Out Of Bounds");
-        }
-        return troops.get(index);
-    }
-
     public int size() {
         return troops.size();
     }
 
-    public boolean isAlive() {
-        boolean status = false;
-        for (Warrior warrior : troops) {
-            if (warrior.isAlive()){
-                status = true;
-                break;
+    private String getContentOfArmy(){
+        HashMap<String,Integer> countHashMap = new HashMap<>();
+
+        for (Warrior warrior:troops) {
+            String currTypeOfTroop = warrior.getClass().getSimpleName();
+            if (!countHashMap.containsKey(currTypeOfTroop)){
+                countHashMap.put(currTypeOfTroop,0);
             }
+            countHashMap.put(currTypeOfTroop,countHashMap.get(currTypeOfTroop)+1);
         }
-        return status;
+        StringBuilder mapAsString = new StringBuilder();
+        for (String key : countHashMap.keySet()) {
+            mapAsString.append(countHashMap.get(key)).append(" ").append(key).append(", ");
+        }
+        mapAsString.delete(mapAsString.length()-2, mapAsString.length());
+        return mapAsString.toString();
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() +
+                " of " + getContentOfArmy();
     }
 }

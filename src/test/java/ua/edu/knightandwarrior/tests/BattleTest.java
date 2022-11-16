@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import ua.edu.knightandwarrior.model.Army;
 import ua.edu.knightandwarrior.model.Knight;
 import ua.edu.knightandwarrior.model.Warrior;
 import ua.edu.knightandwarrior.service.Battle;
@@ -26,7 +27,7 @@ class BattleTest {
         warrior = new Warrior();
     }
 
-    @ParameterizedTest(name = "[{index} {0} fight against {1}, expected result = {2}")
+    @ParameterizedTest(name = "{index}. Fight {0} fight against {1}, expected result = {2}")
     @MethodSource
     @DisplayName("Two warriors fight")
     void testTwoWarriorsFight(Warrior warrior1, Warrior warrior2,boolean warrior2Check, boolean expected){
@@ -58,5 +59,50 @@ class BattleTest {
 
         //then
         assertFalse(test);
+    }
+
+    @ParameterizedTest(name = "{index}. Fight {0} fight against {1}, expected result = {2}")
+    @MethodSource
+    @DisplayName("Two armies fight")
+    void testTwoArmiesFight(Army army1, Army army2, boolean expected){
+        //when
+        var status = Battle.fight(army1,army2);
+
+        //then
+        assertEquals(expected,status);
+    }
+
+    static List<Arguments> testTwoArmiesFight(){
+        return List.of(
+                arguments(new Army()
+                        .addUnits(Warrior::new, 1),
+                        new Army()
+                                .addUnits(Warrior::new, 3),
+                        false),
+                arguments(new Army()
+                                .addUnits(Warrior::new, 2),
+                        new Army()
+                                .addUnits(Warrior::new, 3),
+                        false),
+                arguments(new Army()
+                                .addUnits(Warrior::new, 5),
+                        new Army()
+                                .addUnits(Warrior::new, 7),
+                        false),
+                arguments(new Army()
+                                .addUnits(Warrior::new, 20),
+                        new Army()
+                                .addUnits(Warrior::new, 21),
+                        true),
+                arguments(new Army()
+                                .addUnits(Warrior::new, 10),
+                        new Army()
+                                .addUnits(Warrior::new, 11),
+                        true),
+                arguments(new Army()
+                                .addUnits(Warrior::new, 11),
+                        new Army()
+                                .addUnits(Warrior::new, 7),
+                        true));
     }
 }
