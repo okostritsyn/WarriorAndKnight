@@ -20,14 +20,14 @@ public class Vampire extends Warrior {
         int healthBeforeHit = warrior.getHealth();
         warrior.receiveDamage(getAttack());
         int healthAfterHit = warrior.getHealth();
-
-        int vampire = (healthBeforeHit-healthAfterHit)/2;
+        int koef = 100/getVampirism();
+        int vampire = (healthBeforeHit-healthAfterHit)/koef;
         if ((getHealth()+vampire)<=INITHEALTH) {
             setHealth(getHealth() + vampire);
         }
     }
 
-    @Override
+    @Override //?
     protected void receiveDamage(int attack) {
         setHealth(getHealth() - attack);
     }
