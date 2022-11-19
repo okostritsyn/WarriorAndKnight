@@ -3,8 +3,10 @@ package ua.edu.knightandwarrior.model;
 public class Vampire extends Warrior {
     private static final int VAMPIRISM=50;
     private static final int ATTACK=4;
-    private static final int INITHEALTH=40;
-    private int health = INITHEALTH;
+
+    public Vampire() {
+        super(40);
+    }
 
     @Override
     public int getAttack() {
@@ -17,27 +19,11 @@ public class Vampire extends Warrior {
 
     @Override
     public void attack(Warrior warrior) {
-        int healthBeforeHit = warrior.getHealth();
-        warrior.receiveDamage(getAttack());
-        int healthAfterHit = warrior.getHealth();
-        int k = 100/getVampirism();
-        int vampire = (healthBeforeHit-healthAfterHit)/k;
-        if ((getHealth()+vampire)<=INITHEALTH) {
-            setHealth(getHealth() + vampire);
-        }
-    }
-
-    @Override //?
-    protected void receiveDamage(int attack) {
-        setHealth(getHealth() - attack);
-    }
-
-    @Override
-    public int getHealth() {
-        return health;
-    }
-
-    private void setHealth(int health) {
-        this.health = health;
+        var healthBeforeHit = warrior.getHealth();
+        super.attack(warrior);
+        var healthAfterHit = warrior.getHealth();
+        var healthDamage = healthBeforeHit-healthAfterHit;
+        int healPoints = healthDamage*getVampirism()/100;
+        healBy(healPoints);
     }
 }

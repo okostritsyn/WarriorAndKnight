@@ -1,7 +1,5 @@
 package ua.edu.knightandwarrior.model;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.function.Supplier;
 
@@ -25,14 +23,14 @@ public class Army {
          */
         @Override
         public boolean hasNext() {
-            if ((champion == null) || !champion.isAlive()){
-                if (iterator.hasNext()){
-                    champion = iterator.next();
-                } else {
-                    return false;
-                }
+            if ((champion != null) && champion.isAlive()) {
+                return true;
             }
-            return true;
+            while (iterator.hasNext()) {
+                champion = iterator.next();
+                if (champion.isAlive()) return true;
+            }
+            return false;
         }
 
         /**
@@ -61,24 +59,24 @@ public class Army {
         return this;
     }
 
-    public int size() {
-        return troops.size();
-    }
-
     private String getContentOfArmy(){
         HashMap<String,Integer> countHashMap = new HashMap<>();
 
         for (Warrior warrior:troops) {
             String currTypeOfTroop = warrior.getClass().getSimpleName();
-            if (!countHashMap.containsKey(currTypeOfTroop)){
-                countHashMap.put(currTypeOfTroop,0);
-            }
+            countHashMap.putIfAbsent(currTypeOfTroop,0);
             countHashMap.put(currTypeOfTroop,countHashMap.get(currTypeOfTroop)+1);
         }
         StringBuilder mapAsString = new StringBuilder();
-        for (String key : countHashMap.keySet()) {
-            mapAsString.append(countHashMap.get(key)).append(" ").append(key).append(", ");
+
+        for (Map.Entry<String, Integer> entry : countHashMap.entrySet())
+        {
+            mapAsString.append(countHashMap.get(entry.getKey()))
+                    .append(" ")
+                    .append(entry.getKey())
+                    .append(", ");
         }
+
         mapAsString.delete(mapAsString.length()-2, mapAsString.length());
         return mapAsString.toString();
     }

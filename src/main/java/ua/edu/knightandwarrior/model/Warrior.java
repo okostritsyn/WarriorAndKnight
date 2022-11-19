@@ -2,7 +2,16 @@ package ua.edu.knightandwarrior.model;
 
 public class Warrior {
     private static final int ATTACK=5;
-    private int health = 50;
+    private int health ;
+    private final int initialHealth;
+
+    public Warrior() {
+        this(50);
+    }
+
+    public Warrior(int health) {
+        initialHealth = this.health = health;
+    }
 
     public int getAttack() {
         return ATTACK;
@@ -13,7 +22,7 @@ public class Warrior {
     }
 
     private void setHealth(int health) {
-        this.health = health;
+        this.health = Math.min(initialHealth,health);
     }
 
     public void attack(Warrior warrior) {
@@ -22,6 +31,10 @@ public class Warrior {
 
     protected void receiveDamage(int attack) {
         setHealth(getHealth() - attack);
+    }
+
+    protected void healBy(int healPoints) {
+        setHealth(getHealth() + healPoints);
     }
 
     public boolean isAlive() {
