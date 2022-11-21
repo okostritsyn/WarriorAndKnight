@@ -4,6 +4,7 @@ public class Warrior {
     private static final int ATTACK=5;
     private int health ;
     private final int initialHealth;
+    private Army army;
 
     public Warrior() {
         this(50);
@@ -23,6 +24,14 @@ public class Warrior {
 
     private void setHealth(int health) {
         this.health = Math.min(initialHealth,health);
+    }
+
+    public Army getArmy() {
+        return army;
+    }
+
+    public void setArmy(Army army) {
+        this.army = army;
     }
 
     public void attack(Warrior warrior) {

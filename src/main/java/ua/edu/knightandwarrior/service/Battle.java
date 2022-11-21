@@ -3,6 +3,7 @@ package ua.edu.knightandwarrior.service;
 import ua.edu.knightandwarrior.model.Army;
 import ua.edu.knightandwarrior.model.Warrior;
 
+
 public class Battle {
 
     private Battle() {

@@ -10,6 +10,7 @@ public class Main {
         var rog = new Rookie();
         var lancelot = new Defender();
         var vampire  = new Vampire();
+        var lancer  = new Lancer();
 
         System.out.println("Fight Warrior vs Defender "+Battle.fight(mike, bob));
         System.out.println("Defender "+bob.getHealth());
@@ -30,5 +31,16 @@ public class Main {
 
         System.out.println("Warrior vs vampire "+Battle.fight(new Warrior(), vampire));
         System.out.println("vampire health"+vampire.getHealth());
+
+
+        myArmy = new Army();
+        myArmy.addUnit(lancer);
+
+        enemyArmy = new Army();
+        enemyArmy.addUnits(Warrior::new, 1);
+        enemyArmy.addUnits(Knight::new, 1);
+
+        System.out.println("Fight myArmy vs enemyArmy "+Battle.fight(myArmy, enemyArmy));
+        System.out.println("lancer health"+lancer.getHealth());
     }
 }

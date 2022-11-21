@@ -48,15 +48,32 @@ public class Army {
         }
     }
 
-    private void addUnit(Warrior warrior){
+    public void addUnit(Warrior warrior){
         troops.add(warrior);
     }
 
     public Army addUnits(Supplier<Warrior> factory, int quantity){
         for (int i = 0; i < quantity; i++){
-            addUnit(factory.get());
+            Warrior currUnit = factory.get();
+            addUnit(currUnit);
+            currUnit.setArmy(this);
         }
         return this;
+    }
+
+    public List<Warrior> getUnitsBehind(Warrior warrior){
+        List<Warrior> unitsBehind = new ArrayList<>();
+        boolean addUnitsToList = false;
+        for (Warrior currWarrior: troops) {
+            if (currWarrior==warrior){
+                addUnitsToList = true;
+                continue;
+            }
+            if (addUnitsToList){
+                unitsBehind.add(currWarrior);
+            }
+        }
+        return unitsBehind;
     }
 
     private String getContentOfArmy(){
