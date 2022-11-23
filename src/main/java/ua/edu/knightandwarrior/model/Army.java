@@ -34,6 +34,11 @@ public class Army {
         }
 
         @Override
+        public int getZeroHealth() {
+            return warrior.getZeroHealth();
+        }
+
+        @Override
         public int getHealth() {
             return warrior.getHealth();
         }

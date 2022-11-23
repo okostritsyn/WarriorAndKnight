@@ -4,8 +4,10 @@ import ua.edu.knightandwarrior.service.EventManager;
 
 public interface IWarrior {
     default boolean isAlive() {
-        return getHealth()>0;
+        return getHealth()>getZeroHealth();
     }
+
+    int getZeroHealth();
 
     int getHealth();
 

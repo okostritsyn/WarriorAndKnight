@@ -4,6 +4,7 @@ import ua.edu.knightandwarrior.service.EventManager;
 
 public class Warrior implements IWarrior {
     private static final int ATTACK=5;
+    private static final int ZERO_HEALTH=0;
     private int health ;
     private final int initialHealth;
     private EventManager events;
@@ -21,6 +22,10 @@ public class Warrior implements IWarrior {
         return events;
     }
 
+    @Override
+    public int getZeroHealth() {
+        return ZERO_HEALTH;
+    }
 
     @Override
     public int getAttack() {
