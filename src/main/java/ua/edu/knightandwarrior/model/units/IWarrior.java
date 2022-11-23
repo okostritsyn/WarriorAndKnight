@@ -2,8 +2,9 @@ package ua.edu.knightandwarrior.model.units;
 
 public interface IWarrior {
     default boolean isAlive() {
-        return getHealth()>0;
+        return getHealth()>getZeroHealth();
     }
+    int getZeroHealth();
 
     int getHealth();
 
