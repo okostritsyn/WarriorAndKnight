@@ -1,6 +1,7 @@
 package ua.edu.knightandwarrior.model.units;
 
 import ua.edu.knightandwarrior.service.EventListener;
+import ua.edu.knightandwarrior.service.EventType;
 
 public class Healer extends Warrior implements IHealer,EventListener {
     private static final int ATTACK=0;
@@ -25,8 +26,8 @@ public class Healer extends Warrior implements IHealer,EventListener {
     }
 
     @Override
-    public void update(String eventType, IWarrior unit) {
-        if(eventType.equals("INeedHealth")){
+    public void update(EventType eventType, IWarrior unit) {
+        if(eventType == EventType.I_NEED_HEALTH){
             heal(unit,getHealthPoints());
         }
     }

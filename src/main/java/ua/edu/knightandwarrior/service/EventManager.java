@@ -8,25 +8,25 @@ import java.util.List;
 import java.util.Map;
 
 public class EventManager {
-    Map<String, List<EventListener>> listeners = new HashMap<>();
+    Map<EventType, List<EventListener>> listeners = new HashMap<>();
 
-    public EventManager(String... operations) {
-        for (String operation : operations) {
+    public EventManager(EventType... operations) {
+        for (EventType operation : operations) {
             this.listeners.put(operation, new ArrayList<>());
         }
     }
 
-    public void subscribe(String eventType, EventListener listener) {
+    public void subscribe(EventType eventType, EventListener listener) {
         List<EventListener> users = listeners.get(eventType);
         users.add(listener);
     }
 
-    public void unsubscribe(String eventType, EventListener listener) {
+    public void unsubscribe(EventType eventType, EventListener listener) {
         List<EventListener> users = listeners.get(eventType);
         users.remove(listener);
     }
 
-    public void notify(String eventType, IWarrior unit) {
+    public void notify(EventType eventType, IWarrior unit) {
         List<EventListener> users = listeners.get(eventType);
         for (EventListener listener : users) {
             listener.update(eventType, unit);

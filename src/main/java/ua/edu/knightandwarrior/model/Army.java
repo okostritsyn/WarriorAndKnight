@@ -3,6 +3,7 @@ package ua.edu.knightandwarrior.model;
 import ua.edu.knightandwarrior.model.units.IHealer;
 import ua.edu.knightandwarrior.model.units.IWarrior;
 import ua.edu.knightandwarrior.service.EventManager;
+import ua.edu.knightandwarrior.service.EventType;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -138,7 +139,7 @@ public class Army {
             if (unit instanceof HasWarriorBehind warriorInArmy){
                 var nextWarrior = (HasWarriorBehind) warriorInArmy.getWarriorBehind();
                 if (nextWarrior != null && nextWarrior.getWarrior() instanceof IHealer) {
-                    unit.getEvents().subscribe("INeedHealth", (ua.edu.knightandwarrior.service.EventListener) nextWarrior.getWarrior());
+                    unit.getEvents().subscribe(EventType.I_NEED_HEALTH, (ua.edu.knightandwarrior.service.EventListener) nextWarrior.getWarrior());
                 }
             }
         }

@@ -1,6 +1,7 @@
 package ua.edu.knightandwarrior.model.units;
 
 import ua.edu.knightandwarrior.service.EventManager;
+import ua.edu.knightandwarrior.service.EventType;
 
 public class Warrior implements IWarrior {
     private static final int ATTACK=5;
@@ -15,7 +16,7 @@ public class Warrior implements IWarrior {
 
     public Warrior(int health) {
         initialHealth = this.health = health;
-        this.events = new EventManager("INeedHealth");
+        this.events = new EventManager(EventType.I_NEED_HEALTH);
     }
 
     public EventManager getEvents() {
@@ -42,7 +43,7 @@ public class Warrior implements IWarrior {
 
     public void attack(IWarrior warrior) {
         if (initialHealth>getHealth()){
-            events.notify("INeedHealth",this);
+            events.notify(EventType.I_NEED_HEALTH,this);
         }
 
         warrior.receiveDamage(getAttack());
