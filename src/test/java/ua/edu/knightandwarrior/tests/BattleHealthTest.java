@@ -35,6 +35,7 @@ class BattleHealthTest {
                 arguments(new Defender(), new Lancer(),0, 5),
                 arguments(new Lancer(), new Defender(),8, 0),
                 arguments(new Warrior(), new Lancer(),-4, 5),
-                arguments(new Lancer(), new Warrior(),10, -4));
+                arguments(new Lancer(), new Warrior(),10, -4),
+                arguments(new Healer(), new Warrior(),0, 50));
     }
 }

@@ -36,12 +36,15 @@ public class Warrior implements IWarrior {
     }
 
     public void attack(IWarrior warrior) {
+        if (initialHealth>getHealth()){
+            events.notify("INeedHealth",this);
+        }
+
         warrior.receiveDamage(getAttack());
     }
 
     public void receiveDamage(int attack) {
         setHealth(getHealth() - attack);
-        events.notify("INeedHealth",this);
     }
 
     public void healBy(int healPoints) {

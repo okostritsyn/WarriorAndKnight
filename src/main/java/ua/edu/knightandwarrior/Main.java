@@ -37,11 +37,13 @@ public class Main {
         myArmy = new Army();
         myArmy.addUnits(Warrior::new, 1);
         myArmy.addUnits(Healer::new, 1);
-        myArmy.addUnits(Warrior::new, 1);
+        myArmy.addUnits(Defender::new, 1);
+        myArmy.addUnits(Healer::new, 1);
+        myArmy.addUnits(Knight::new, 1);
 
         enemyArmy = new Army();
         enemyArmy.addUnits(Lancer::new, 1);
-        enemyArmy.addUnits(Warrior::new, 1);
+        enemyArmy.addUnits(Warrior::new, 4);
 
         System.out.println("Fight myArmy vs enemyArmy "+Battle.fight(myArmy, enemyArmy));
         System.out.println("lancer health"+lancer.getHealth());
