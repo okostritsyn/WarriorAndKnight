@@ -1,23 +1,47 @@
 package ua.edu.knightandwarrior;
 
-import ua.edu.knightandwarrior.model.Knight;
-import ua.edu.knightandwarrior.model.Warrior;
+import ua.edu.knightandwarrior.model.*;
+import ua.edu.knightandwarrior.model.units.*;
 import ua.edu.knightandwarrior.service.Battle;
 
 public class Main {
     public static void main(String[] args) {
-        Warrior chuck = new Warrior();
-        Warrior bruce = new Warrior();
-        Warrior carl = new Knight();
-        Warrior dave = new Warrior();
+        var bob = new Defender();
+        var mike = new Warrior();
+        var rog = new Rookie();
+        var lancelot = new Defender();
+        var vampire  = new Vampire();
+        var lancer  = new Lancer();
 
-        System.out.println("Fight chuck vs bruce "+Battle.fight(chuck,bruce));
-        System.out.println("chuck "+chuck);
-        System.out.println("bruce "+bruce);
+        System.out.println("Fight Warrior vs Defender "+Battle.fight(mike, bob));
+        System.out.println("Defender "+bob.getHealth());
+        System.out.println("Warrior "+mike.getHealth());
+        System.out.println("Fight Defender vs Rookie "+Battle.fight(lancelot, rog));
 
-        System.out.println("Fight dave vs carl "+Battle.fight(dave,carl));
-        System.out.println("dave "+dave);
-        System.out.println("carl "+carl);
+        var myArmy = new Army();
+        myArmy.addUnits(Defender::new, 2);
+        myArmy.addUnits(Vampire::new, 2);
+        myArmy.addUnits(Warrior::new, 1);
 
+        var enemyArmy = new Army();
+        enemyArmy.addUnits(Warrior::new, 2);
+        enemyArmy.addUnits(Defender::new, 2);
+        enemyArmy.addUnits(Vampire::new, 3);
+
+        System.out.println("Fight myArmy vs enemyArmy "+Battle.fight(myArmy, enemyArmy));
+
+        System.out.println("Warrior vs vampire "+Battle.fight(new Warrior(), vampire));
+        System.out.println("vampire health"+vampire.getHealth());
+
+
+        myArmy = new Army();
+        myArmy.addUnits(Warrior::new, 2);
+
+        enemyArmy = new Army();
+        enemyArmy.addUnits(Lancer::new, 1);
+        enemyArmy.addUnits(Warrior::new, 1);
+
+        System.out.println("Fight myArmy vs enemyArmy "+Battle.fight(myArmy, enemyArmy));
+        System.out.println("lancer health"+lancer.getHealth());
     }
 }
