@@ -1,6 +1,7 @@
 package ua.edu.knightandwarrior;
 
 import ua.edu.knightandwarrior.model.*;
+import ua.edu.knightandwarrior.model.units.*;
 import ua.edu.knightandwarrior.service.Battle;
 
 public class Main {
@@ -34,11 +35,11 @@ public class Main {
 
 
         myArmy = new Army();
-        myArmy.addUnit(lancer);
+        myArmy.addUnits(Warrior::new, 2);
 
         enemyArmy = new Army();
+        enemyArmy.addUnits(Lancer::new, 1);
         enemyArmy.addUnits(Warrior::new, 1);
-        enemyArmy.addUnits(Knight::new, 1);
 
         System.out.println("Fight myArmy vs enemyArmy "+Battle.fight(myArmy, enemyArmy));
         System.out.println("lancer health"+lancer.getHealth());

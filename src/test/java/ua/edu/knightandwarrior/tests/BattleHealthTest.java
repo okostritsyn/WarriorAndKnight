@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import ua.edu.knightandwarrior.model.*;
+import ua.edu.knightandwarrior.model.units.*;
 import ua.edu.knightandwarrior.service.Battle;
 
 import java.util.List;
@@ -16,7 +16,7 @@ class BattleHealthTest {
     @ParameterizedTest(name = "{index}. Fight {0} fight against {1}, expected result = {2} and expected result = {3}")
     @MethodSource
     @DisplayName("Two warriors fight")
-    void testTwoWarriorsFight(Warrior warrior1, Warrior warrior2,int expectedHeatlhUnit1, int expectedHeatlhUnit2){
+    void testTwoWarriorsFight(Warrior warrior1, Warrior warrior2, int expectedHeatlhUnit1, int expectedHeatlhUnit2){
         //when
         Battle.fight(warrior1,warrior2);
 

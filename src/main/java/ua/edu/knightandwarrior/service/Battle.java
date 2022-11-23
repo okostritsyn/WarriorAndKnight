@@ -1,8 +1,7 @@
 package ua.edu.knightandwarrior.service;
 
 import ua.edu.knightandwarrior.model.Army;
-import ua.edu.knightandwarrior.model.Warrior;
-
+import ua.edu.knightandwarrior.model.units.IWarrior;
 
 public class Battle {
 
@@ -23,7 +22,8 @@ public class Battle {
 
     }
 
-    public static boolean fight(Warrior defender, Warrior attacker){
+    public static boolean fight(IWarrior defender, IWarrior attacker){
+
         while (defender.isAlive() && attacker.isAlive()) {
             defender.attack(attacker);
             if(attacker.isAlive()){

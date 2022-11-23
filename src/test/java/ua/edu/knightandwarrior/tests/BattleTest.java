@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import ua.edu.knightandwarrior.model.*;
+import ua.edu.knightandwarrior.model.units.*;
 import ua.edu.knightandwarrior.service.Battle;
 
 import java.util.List;
@@ -48,6 +49,9 @@ class BattleTest {
                 arguments(new Knight(), new Warrior(),false, true),
                 arguments(new Warrior(), new Warrior(),false, true),
                 arguments(new Knight(), new Warrior(),false, true),
+                arguments(new Lancer(), new Knight(),false, false),
+                arguments(new Lancer(), new Lancer(),false, true),
+                arguments(new Lancer(), new Warrior(),false, true),
                 arguments(new Warrior(), new Warrior(),true, false),
                 arguments(new Warrior(), new Knight(),true, true));
     }

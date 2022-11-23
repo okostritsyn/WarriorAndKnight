@@ -1,6 +1,8 @@
-package ua.edu.knightandwarrior.model;
+package ua.edu.knightandwarrior.model.units;
 
-public class Warrior {
+import ua.edu.knightandwarrior.model.Army;
+
+public class Warrior implements IWarrior {
     private static final int ATTACK=5;
     private int health ;
     private final int initialHealth;
@@ -34,20 +36,16 @@ public class Warrior {
         this.army = army;
     }
 
-    public void attack(Warrior warrior) {
+    public void attack(IWarrior warrior) {
         warrior.receiveDamage(getAttack());
     }
 
-    protected void receiveDamage(int attack) {
+    public void receiveDamage(int attack) {
         setHealth(getHealth() - attack);
     }
 
-    protected void healBy(int healPoints) {
+    public void healBy(int healPoints) {
         setHealth(getHealth() + healPoints);
-    }
-
-    public boolean isAlive() {
-        return getHealth()>0;
     }
 
     @Override

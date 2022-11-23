@@ -1,18 +1,59 @@
 package ua.edu.knightandwarrior.model;
 
+import ua.edu.knightandwarrior.model.units.IWarrior;
+
 import java.util.*;
 import java.util.function.Supplier;
 
 public class Army {
-    List<Warrior> troops = new ArrayList<>();
+    List<IWarrior> troops = new ArrayList<>();
+    WarriorInArmy tail;
 
-    public Iterator<Warrior> firstAliveIterator(){
+    static class WarriorInArmy implements HasWarriorBehind, IWarrior{
+        IWarrior nextWarrior;
+        IWarrior warrior;
+
+        public WarriorInArmy(IWarrior opponent) {
+            this.warrior = opponent;
+        }
+
+        @Override
+        public IWarrior getWarriorBehind() {
+            return this.nextWarrior;
+        }
+
+        private void setWarriorBehind(IWarrior opponent) {
+            this.nextWarrior = opponent;
+        }
+
+        @Override
+        public int getHealth() {
+            return warrior.getHealth();
+        }
+
+        @Override
+        public void attack(IWarrior opponent) {
+            warrior.attack(opponent);
+        }
+
+        @Override
+        public void receiveDamage(int attack) {
+            warrior.receiveDamage(attack);
+        }
+
+        @Override
+        public void healBy(int healPoints) {
+            warrior.healBy(healPoints);
+        }
+    }
+
+    public Iterator<IWarrior> firstAliveIterator(){
         return new FirstAliveIterator();
     }
 
-    class FirstAliveIterator implements Iterator<Warrior>{
-        Iterator<Warrior> iterator = troops.iterator();
-        Warrior champion;
+    class FirstAliveIterator implements Iterator<IWarrior>{
+        Iterator<IWarrior> iterator = troops.iterator();
+        IWarrior champion;
 
         /**
          * Returns {@code true} if the iteration has more elements.
@@ -40,7 +81,7 @@ public class Army {
          * @throws NoSuchElementException if the iteration has no more elements
          */
         @Override
-        public Warrior next() {
+        public IWarrior next() {
             if (!hasNext()){
                 throw new NoSuchElementException();
             }
@@ -48,38 +89,26 @@ public class Army {
         }
     }
 
-    public void addUnit(Warrior warrior){
-        troops.add(warrior);
+    public void addUnit(IWarrior warrior){
+        WarriorInArmy unitInArmy = new WarriorInArmy(warrior);
+        if (tail != null){
+            tail.setWarriorBehind(unitInArmy);
+        }
+        tail = unitInArmy;
+        troops.add(unitInArmy);
     }
 
-    public Army addUnits(Supplier<Warrior> factory, int quantity){
+    public Army addUnits(Supplier<IWarrior> factory, int quantity){
         for (int i = 0; i < quantity; i++){
-            Warrior currUnit = factory.get();
-            addUnit(currUnit);
-            currUnit.setArmy(this);
+            addUnit(factory.get());
         }
         return this;
-    }
-
-    public List<Warrior> getUnitsBehind(Warrior warrior){
-        List<Warrior> unitsBehind = new ArrayList<>();
-        boolean addUnitsToList = false;
-        for (Warrior currWarrior: troops) {
-            if (currWarrior==warrior){
-                addUnitsToList = true;
-                continue;
-            }
-            if (addUnitsToList){
-                unitsBehind.add(currWarrior);
-            }
-        }
-        return unitsBehind;
     }
 
     private String getContentOfArmy(){
         HashMap<String,Integer> countHashMap = new HashMap<>();
 
-        for (Warrior warrior:troops) {
+        for (IWarrior warrior:troops) {
             String currTypeOfTroop = warrior.getClass().getSimpleName();
             countHashMap.putIfAbsent(currTypeOfTroop,0);
             countHashMap.put(currTypeOfTroop,countHashMap.get(currTypeOfTroop)+1);

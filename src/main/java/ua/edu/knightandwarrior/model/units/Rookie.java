@@ -1,4 +1,4 @@
-package ua.edu.knightandwarrior.model;
+package ua.edu.knightandwarrior.model.units;
 
 public class Rookie extends Warrior{
     private static final int ATTACK=1;

@@ -1,4 +1,4 @@
-package ua.edu.knightandwarrior.model;
+package ua.edu.knightandwarrior.model.units;
 
 public class Vampire extends Warrior {
     private static final int VAMPIRISM=50;
@@ -18,7 +18,7 @@ public class Vampire extends Warrior {
     }
 
     @Override
-    public void attack(Warrior warrior) {
+    public void attack(IWarrior warrior) {
         var healthBeforeHit = warrior.getHealth();
         super.attack(warrior);
         var healthAfterHit = warrior.getHealth();
