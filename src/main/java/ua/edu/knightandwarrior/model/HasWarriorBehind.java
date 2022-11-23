@@ -4,4 +4,5 @@ import ua.edu.knightandwarrior.model.units.IWarrior;
 
 public interface HasWarriorBehind {
     IWarrior getWarriorBehind();
+    IWarrior getWarrior();
 }

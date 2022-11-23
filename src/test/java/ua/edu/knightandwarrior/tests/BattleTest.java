@@ -222,6 +222,34 @@ class BattleTest {
                         new Army()
                                 .addUnits(Lancer::new, 1)
                                 .addUnits(Warrior::new, 1),
+                        false),
+                arguments(new Army()
+                                .addUnits(Lancer::new, 7)
+                                .addUnits(Vampire::new, 3)
+                                .addUnits(Healer::new, 1)
+                                .addUnits(Warrior::new, 4)
+                                .addUnits(Healer::new, 1)
+                                .addUnits(Defender::new, 2),
+                        new Army()
+                                .addUnits(Warrior::new, 4)
+                                .addUnits(Defender::new, 4)
+                                .addUnits(Healer::new, 1)
+                                .addUnits(Vampire::new, 6)
+                                .addUnits(Lancer::new, 4),
+                        true),
+                arguments(new Army()
+                                .addUnits(Lancer::new, 1)
+                                .addUnits(Warrior::new, 3)
+                                .addUnits(Healer::new, 1)
+                                .addUnits(Warrior::new, 4)
+                                .addUnits(Healer::new, 1)
+                                .addUnits(Knight::new, 2),
+                        new Army()
+                                .addUnits(Warrior::new, 4)
+                                .addUnits(Defender::new, 4)
+                                .addUnits(Healer::new, 1)
+                                .addUnits(Vampire::new, 6)
+                                .addUnits(Lancer::new, 4),
                         false));
     }
 }

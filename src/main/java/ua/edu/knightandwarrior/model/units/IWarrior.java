@@ -1,5 +1,7 @@
 package ua.edu.knightandwarrior.model.units;
 
+import ua.edu.knightandwarrior.service.EventManager;
+
 public interface IWarrior {
     default boolean isAlive() {
         return getHealth()>0;
@@ -9,8 +11,15 @@ public interface IWarrior {
 
     void attack(IWarrior warrior);
 
+    int getAttack();
+
     void receiveDamage(int attack);
 
     void healBy(int healPoints);
 
+    EventManager getEvents();
+
+    default void killUnit(){
+        healBy(-1*getHealth());
+    }
 }

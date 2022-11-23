@@ -35,7 +35,9 @@ public class Main {
 
 
         myArmy = new Army();
-        myArmy.addUnits(Warrior::new, 2);
+        myArmy.addUnits(Warrior::new, 1);
+        myArmy.addUnits(Healer::new, 1);
+        myArmy.addUnits(Warrior::new, 1);
 
         enemyArmy = new Army();
         enemyArmy.addUnits(Lancer::new, 1);

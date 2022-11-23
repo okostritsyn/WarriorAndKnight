@@ -1,6 +1,8 @@
 package ua.edu.knightandwarrior.model;
 
+import ua.edu.knightandwarrior.model.units.IHealer;
 import ua.edu.knightandwarrior.model.units.IWarrior;
+import ua.edu.knightandwarrior.service.EventManager;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -22,6 +24,11 @@ public class Army {
             return this.nextWarrior;
         }
 
+        @Override
+        public IWarrior getWarrior() {
+            return this.warrior;
+        }
+
         private void setWarriorBehind(IWarrior opponent) {
             this.nextWarrior = opponent;
         }
@@ -37,6 +44,11 @@ public class Army {
         }
 
         @Override
+        public int getAttack() {
+            return warrior.getAttack();
+        }
+
+        @Override
         public void receiveDamage(int attack) {
             warrior.receiveDamage(attack);
         }
@@ -44,6 +56,16 @@ public class Army {
         @Override
         public void healBy(int healPoints) {
             warrior.healBy(healPoints);
+        }
+
+        @Override
+        public EventManager getEvents() {
+            return warrior.getEvents();
+        }
+
+        @Override
+        public String toString() {
+            return getWarrior().toString();
         }
     }
 
@@ -96,6 +118,7 @@ public class Army {
         }
         tail = unitInArmy;
         troops.add(unitInArmy);
+
     }
 
     public Army addUnits(Supplier<IWarrior> factory, int quantity){
@@ -105,11 +128,23 @@ public class Army {
         return this;
     }
 
+    public  void initSubscribesInArmy(){
+        for (IWarrior unit:troops) {
+            if (unit instanceof HasWarriorBehind warriorInArmy){
+                var nextWarrior = (HasWarriorBehind) warriorInArmy.getWarriorBehind();
+                if (nextWarrior != null && nextWarrior.getWarrior() instanceof IHealer) {
+                    unit.getEvents().subscribe("INeedHealth", (ua.edu.knightandwarrior.service.EventListener) nextWarrior.getWarrior());
+                }
+            }
+        }
+    }
+
     private String getContentOfArmy(){
         HashMap<String,Integer> countHashMap = new HashMap<>();
 
         for (IWarrior warrior:troops) {
-            String currTypeOfTroop = warrior.getClass().getSimpleName();
+            var currentUnit = (HasWarriorBehind) warrior;
+            String currTypeOfTroop = currentUnit.getWarrior().getClass().getSimpleName();
             countHashMap.putIfAbsent(currTypeOfTroop,0);
             countHashMap.put(currTypeOfTroop,countHashMap.get(currTypeOfTroop)+1);
         }

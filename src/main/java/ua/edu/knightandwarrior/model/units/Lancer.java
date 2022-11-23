@@ -28,14 +28,16 @@ public class Lancer extends Warrior{
     public void attack(IWarrior warrior) {
         var healthBeforeHit = warrior.getHealth();
         super.attack(warrior);
+        var healthAfterHit = warrior.getHealth();
 
         for (int i = 0; i < getQuantityUnitsAttack(); i++) {
             if (warrior instanceof HasWarriorBehind warriorInArmy) {
                 var nextWarrior = warriorInArmy.getWarriorBehind();
                 if (nextWarrior != null) {
-                    var healthAfterHit = warrior.getHealth();
                     var damageToNext = (healthBeforeHit - healthAfterHit) * getPiercingPower() / 100;
+                    healthBeforeHit = nextWarrior.getHealth();
                     nextWarrior.receiveDamage(damageToNext);
+                    healthAfterHit = nextWarrior.getHealth();
                     warrior = nextWarrior;
                 } else {
                     break;
