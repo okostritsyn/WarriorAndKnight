@@ -159,6 +159,10 @@ public class Army {
         changeSubscribeUnitsInArmy(this.type == ArmyType.TROOP);
     }
 
+    public int size(){
+       return troops.size();
+    }
+
     private void changeSubscribeUnitsInArmy(boolean turnOn){
         for (IWarrior unit:troops) {
             if (unit instanceof HasWarriorBehind warriorInArmy){

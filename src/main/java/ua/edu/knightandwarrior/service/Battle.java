@@ -28,8 +28,8 @@ public class Battle {
     public static boolean straightFight(Army defenderArmy, Army attackerArmy){
         attackerArmy.initArmy(ArmyType.LINE);
         defenderArmy.initArmy(ArmyType.LINE);
-
-        while(true){
+        var maxRounds = attackerArmy.size()+ defenderArmy.size();
+        while(maxRounds > 0){
             var it1 = defenderArmy.firstAliveIterator();
             var it2 = attackerArmy.firstAliveIterator();
 
@@ -38,8 +38,10 @@ public class Battle {
 
             while (it1.hasNext() && it2.hasNext()) {
                 fight(it1.next(), it2.next());
+                maxRounds --;
             }
         }
+        return defenderArmy.size()>0;// case when attacker army is empty
     }
 
     public static boolean fight(IWarrior defender, IWarrior attacker){
