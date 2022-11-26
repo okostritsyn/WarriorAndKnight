@@ -1,6 +1,7 @@
 package ua.edu.knightandwarrior.tests;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,7 +13,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
+
 class BattleHealthTest {
+
     @ParameterizedTest(name = "{index}. Fight {0} fight against {1}, expected result = {2} and expected result = {3}")
     @MethodSource
     @DisplayName("Two warriors fight")
@@ -26,7 +29,9 @@ class BattleHealthTest {
     }
 
     static List<Arguments> testTwoWarriorsFight(){
-        return List.of(arguments(new Warrior(), new Knight(),-6, 10),
+        return List.of(
+                arguments(new Defender(), new Rookie(),60, -1),
+                arguments(new Warrior(), new Knight(),-6, 10),
                 arguments(new Knight(), new Warrior(),15, -6),
                 arguments(new Warrior(), new Defender(),-1, 9),
                 arguments(new Defender(), new Warrior(),12, -1),

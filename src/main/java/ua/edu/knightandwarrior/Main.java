@@ -45,7 +45,6 @@ public class Main {
         enemyArmy.addUnits(Lancer::new, 1);
         enemyArmy.addUnits(Warrior::new, 4);
 
-        System.out.println("Fight myArmy vs enemyArmy "+Battle.fight(myArmy, enemyArmy));
-        System.out.println("lancer health"+lancer.getHealth());
+        System.out.println("Fight myArmy vs enemyArmy "+Battle.straightFight(myArmy, enemyArmy));
     }
 }

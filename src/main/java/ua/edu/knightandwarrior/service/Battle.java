@@ -1,8 +1,7 @@
 package ua.edu.knightandwarrior.service;
 
 import ua.edu.knightandwarrior.model.Army;
-import ua.edu.knightandwarrior.model.HasWarriorBehind;
-import ua.edu.knightandwarrior.model.units.IHealer;
+import ua.edu.knightandwarrior.model.ArmyType;
 import ua.edu.knightandwarrior.model.units.IWarrior;
 
 public class Battle {
@@ -12,8 +11,8 @@ public class Battle {
 
     public static boolean fight(Army defenderArmy, Army attackerArmy){
 
-        attackerArmy.initSubscribesInArmy();
-        defenderArmy.initSubscribesInArmy();
+        attackerArmy.initArmy(ArmyType.TROOP);
+        defenderArmy.initArmy(ArmyType.TROOP);
 
         var it1 = defenderArmy.firstAliveIterator();
         var it2 = attackerArmy.firstAliveIterator();
@@ -24,6 +23,23 @@ public class Battle {
 
          return it1.hasNext();
 
+    }
+
+    public static boolean straightFight(Army defenderArmy, Army attackerArmy){
+        attackerArmy.initArmy(ArmyType.LINE);
+        defenderArmy.initArmy(ArmyType.LINE);
+
+        while(true){
+            var it1 = defenderArmy.firstAliveIterator();
+            var it2 = attackerArmy.firstAliveIterator();
+
+            if (!it1.hasNext()) return false;
+            if (!it2.hasNext()) return true;
+
+            while (it1.hasNext() && it2.hasNext()) {
+                fight(it1.next(), it2.next());
+            }
+        }
     }
 
     public static boolean fight(IWarrior defender, IWarrior attacker){

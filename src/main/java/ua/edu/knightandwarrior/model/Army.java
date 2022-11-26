@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 public class Army {
     List<IWarrior> troops = new ArrayList<>();
     WarriorInArmy tail;
+    ArmyType type = ArmyType.TROOP;
 
     static class WarriorInArmy implements HasWarriorBehind, IWarrior{
         IWarrior nextWarrior;
@@ -80,8 +81,13 @@ public class Army {
     }
 
     class FirstAliveIterator implements Iterator<IWarrior>{
-        Iterator<IWarrior> iterator = troops.iterator();
-        IWarrior champion;
+        Iterator<IWarrior> iterator;
+        IWarrior nextAlive;
+
+        public FirstAliveIterator() {
+            iterator = troops.iterator();
+            nextAlive = findNewAliveWarrior();
+        }
 
         /**
          * Returns {@code true} if the iteration has more elements.
@@ -92,14 +98,24 @@ public class Army {
          */
         @Override
         public boolean hasNext() {
-            if ((champion != null) && champion.isAlive()) {
+            if ((nextAlive != null) && nextAlive.isAlive()) {
                 return true;
             }
+
+            if (type == ArmyType.TROOP) nextAlive = findNewAliveWarrior();
+
+            return ((nextAlive != null) && nextAlive.isAlive());
+        }
+
+        private IWarrior findNewAliveWarrior(){
+            IWarrior currChampion = null;
             while (iterator.hasNext()) {
-                champion = iterator.next();
-                if (champion.isAlive()) return true;
+                currChampion = iterator.next();
+                if (currChampion.isAlive()) {
+                    break;
+                }
             }
-            return false;
+            return currChampion;
         }
 
         /**
@@ -113,7 +129,12 @@ public class Army {
             if (!hasNext()){
                 throw new NoSuchElementException();
             }
-            return champion;
+
+            var currWarrior = nextAlive;
+
+            if (type == ArmyType.LINE) nextAlive = findNewAliveWarrior();
+
+            return type == ArmyType.TROOP? currWarrior : ((WarriorInArmy) currWarrior).getWarrior();
         }
     }
 
@@ -124,7 +145,6 @@ public class Army {
         }
         tail = unitInArmy;
         troops.add(unitInArmy);
-
     }
 
     public Army addUnits(Supplier<IWarrior> factory, int quantity){
@@ -134,12 +154,21 @@ public class Army {
         return this;
     }
 
-    public  void initSubscribesInArmy(){
+    public void initArmy(ArmyType type){
+        this.type = type;
+        changeSubscribeUnitsInArmy(this.type == ArmyType.TROOP);
+    }
+
+    private void changeSubscribeUnitsInArmy(boolean turnOn){
         for (IWarrior unit:troops) {
             if (unit instanceof HasWarriorBehind warriorInArmy){
                 var nextWarrior = (HasWarriorBehind) warriorInArmy.getWarriorBehind();
                 if (nextWarrior != null && nextWarrior.getWarrior() instanceof IHealer) {
-                    unit.getEvents().subscribe(EventType.I_NEED_HEALTH, (ua.edu.knightandwarrior.service.EventListener) nextWarrior.getWarrior());
+                    if (turnOn) {
+                        unit.getEvents().subscribe(EventType.I_NEED_HEALTH, (ua.edu.knightandwarrior.service.EventListener) nextWarrior.getWarrior());
+                    } else {
+                        unit.getEvents().unsubscribe(EventType.I_NEED_HEALTH, (ua.edu.knightandwarrior.service.EventListener) nextWarrior.getWarrior());
+                    }
                 }
             }
         }
