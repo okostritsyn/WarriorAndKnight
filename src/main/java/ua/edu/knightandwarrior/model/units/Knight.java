@@ -1,10 +1,10 @@
 package ua.edu.knightandwarrior.model.units;
 
-public class Knight extends Warrior {
+public class Knight extends Warrior implements IWarrior {
     private static final int ATTACK=7;
 
     @Override
     public int getAttack() {
-        return ATTACK;
+        return Math.max(0,ATTACK + getAttackByWeapon());
     }
 }

@@ -5,6 +5,6 @@ public class Rookie extends Warrior{
 
     @Override
     public int getAttack() {
-        return ATTACK;
+        return Math.max(0,ATTACK + getAttackByWeapon());
     }
 }
