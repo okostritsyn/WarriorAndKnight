@@ -1,5 +1,5 @@
 package ua.edu.knightandwarrior.model.units;
 
-public interface IHealer {
+public interface CanHeal {
     void heal(IWarrior unit,int healthPoints);
 }

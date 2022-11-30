@@ -2,7 +2,7 @@ package ua.edu.knightandwarrior.model.units;
 
 import ua.edu.knightandwarrior.model.HasWarriorBehind;
 
-public class Lancer extends Warrior{
+public class Lancer extends Warrior implements IWarrior {
     private static final int ATTACK=6;
     private static final int QUANTITY_UNITS_ATTACK=2;
     private static final int PIERCING_POWER=50;
@@ -13,7 +13,7 @@ public class Lancer extends Warrior{
 
     @Override
     public int getAttack() {
-        return ATTACK;
+        return Math.max(0,ATTACK + getAttackByWeapon());
     }
 
     public int getQuantityUnitsAttack() {
@@ -34,7 +34,7 @@ public class Lancer extends Warrior{
             if (warrior instanceof HasWarriorBehind warriorInArmy) {
                 var nextWarrior = warriorInArmy.getWarriorBehind();
                 if (nextWarrior != null) {
-                    var damageToNext = (healthBeforeHit - healthAfterHit) * getPiercingPower() / 100;
+                    int damageToNext = (healthBeforeHit - healthAfterHit) * getPiercingPower() / 100;
                     healthBeforeHit = nextWarrior.getHealth();
                     nextWarrior.receiveDamage(damageToNext);
                     healthAfterHit = nextWarrior.getHealth();

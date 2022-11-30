@@ -2,6 +2,8 @@ package ua.edu.knightandwarrior;
 
 import ua.edu.knightandwarrior.model.*;
 import ua.edu.knightandwarrior.model.units.*;
+import ua.edu.knightandwarrior.model.weapons.Sword;
+import ua.edu.knightandwarrior.model.weapons.Weapon;
 import ua.edu.knightandwarrior.service.Battle;
 
 public class Main {
@@ -11,7 +13,6 @@ public class Main {
         var rog = new Rookie();
         var lancelot = new Defender();
         var vampire  = new Vampire();
-        var lancer  = new Lancer();
 
         System.out.println("Fight Warrior vs Defender "+Battle.fight(mike, bob));
         System.out.println("Defender "+bob.getHealth());
@@ -46,5 +47,8 @@ public class Main {
         enemyArmy.addUnits(Warrior::new, 4);
 
         System.out.println("Fight myArmy vs enemyArmy "+Battle.straightFight(myArmy, enemyArmy));
+
+        Weapon sword = new Sword();
+        System.out.println("sword.getDefense()" + sword.getDefensePoints());
     }
 }

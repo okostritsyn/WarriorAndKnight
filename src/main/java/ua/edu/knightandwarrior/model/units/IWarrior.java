@@ -1,5 +1,6 @@
 package ua.edu.knightandwarrior.model.units;
 
+import ua.edu.knightandwarrior.model.weapons.Weapon;
 import ua.edu.knightandwarrior.service.EventManager;
 
 public interface IWarrior {
@@ -18,6 +19,8 @@ public interface IWarrior {
     void receiveDamage(int attack);
 
     void healBy(int healPoints);
+
+    void equipWeapon(Weapon weapon);
 
     EventManager getEvents();
 

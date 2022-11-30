@@ -1,7 +1,8 @@
 package ua.edu.knightandwarrior.model;
 
-import ua.edu.knightandwarrior.model.units.IHealer;
+import ua.edu.knightandwarrior.model.units.CanHeal;
 import ua.edu.knightandwarrior.model.units.IWarrior;
+import ua.edu.knightandwarrior.model.weapons.Weapon;
 import ua.edu.knightandwarrior.service.EventManager;
 import ua.edu.knightandwarrior.service.EventType;
 
@@ -13,9 +14,10 @@ public class Army {
     WarriorInArmy tail;
     ArmyType type = ArmyType.TROOP;
 
-    static class WarriorInArmy implements HasWarriorBehind, IWarrior{
+    static class WarriorInArmy implements HasWarriorBehind, HasWarriorAHead , IWarrior {
         IWarrior nextWarrior;
         IWarrior warrior;
+        IWarrior previousWarrior;
 
         public WarriorInArmy(IWarrior opponent) {
             this.warrior = opponent;
@@ -27,12 +29,21 @@ public class Army {
         }
 
         @Override
+        public IWarrior getWarriorAHead() {
+            return this.previousWarrior;
+        }
+
+        @Override
         public IWarrior getWarrior() {
             return this.warrior;
         }
 
         private void setWarriorBehind(IWarrior opponent) {
             this.nextWarrior = opponent;
+        }
+
+        private void setPreviousWarrior(IWarrior opponent) {
+            this.previousWarrior = opponent;
         }
 
         @Override
@@ -63,6 +74,11 @@ public class Army {
         @Override
         public void healBy(int healPoints) {
             warrior.healBy(healPoints);
+        }
+
+        @Override
+        public void equipWeapon(Weapon weapon) {
+            warrior.equipWeapon(weapon);
         }
 
         @Override
@@ -138,10 +154,20 @@ public class Army {
         }
     }
 
+    public void equipWarriorAtPosition(int position, Weapon weapon) throws IndexOutOfBoundsException{
+        if (position>=size()){
+            throw new IndexOutOfBoundsException();
+        }
+
+        var currWarrior = troops.get(position);
+        currWarrior.equipWeapon(weapon);
+    }
+
     public void addUnit(IWarrior warrior){
         WarriorInArmy unitInArmy = new WarriorInArmy(warrior);
         if (tail != null){
             tail.setWarriorBehind(unitInArmy);
+            unitInArmy.setPreviousWarrior(tail);
         }
         tail = unitInArmy;
         troops.add(unitInArmy);
@@ -167,7 +193,7 @@ public class Army {
         for (IWarrior unit:troops) {
             if (unit instanceof HasWarriorBehind warriorInArmy){
                 var nextWarrior = (HasWarriorBehind) warriorInArmy.getWarriorBehind();
-                if (nextWarrior != null && nextWarrior.getWarrior() instanceof IHealer) {
+                if (nextWarrior != null && nextWarrior.getWarrior() instanceof CanHeal) {
                     if (turnOn) {
                         unit.getEvents().subscribe(EventType.I_NEED_HEALTH, (ua.edu.knightandwarrior.service.EventListener) nextWarrior.getWarrior());
                     } else {
