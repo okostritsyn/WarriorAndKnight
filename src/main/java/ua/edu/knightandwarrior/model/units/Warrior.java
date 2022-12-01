@@ -13,7 +13,7 @@ public class Warrior implements IWarrior {
     private int health ;
     private final int initialHealth;
     private final EventManager events;
-    private List<Weapon> weapons = new ArrayList<>();
+    private final List<Weapon> weapons = new ArrayList<>();
 
     public Warrior() {
         this(50);
@@ -21,7 +21,7 @@ public class Warrior implements IWarrior {
 
     public Warrior(int health) {
         initialHealth = this.health = health;
-        this.events = new EventManager(EventType.I_NEED_HEALTH,EventType.I_DIE);
+        this.events = new EventManager(EventType.I_NEED_HEALTH,EventType.UNIT_DIED);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class Warrior implements IWarrior {
     private void setHealth(int health) {
         this.health = Math.min(getInitialHealth(),health);
         if (getHealth() <= 0){
-            events.notify(EventType.I_DIE,this);
+            events.notify(EventType.UNIT_DIED,this);
         }
     }
 

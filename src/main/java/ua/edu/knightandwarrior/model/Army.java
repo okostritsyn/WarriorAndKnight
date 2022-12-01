@@ -4,18 +4,34 @@ import ua.edu.knightandwarrior.model.units.CanHeal;
 import ua.edu.knightandwarrior.model.units.IWarrior;
 import ua.edu.knightandwarrior.model.units.Warlord;
 import ua.edu.knightandwarrior.model.weapons.Weapon;
+import ua.edu.knightandwarrior.service.EventListener;
 import ua.edu.knightandwarrior.service.EventManager;
 import ua.edu.knightandwarrior.service.EventType;
 
 import java.util.*;
 import java.util.function.Supplier;
 
-public class Army {
+public class Army implements Iterable<IWarrior>, EventListener {
     List<IWarrior> troops = new ArrayList<>();
     WarriorInArmy tail;
-    IWarrior warload;
+    Warlord warlord;
 
     ArmyType type = ArmyType.TROOP;
+
+    /**
+     * Returns an iterator over elements of type {@code T}.
+     *
+     * @return an Iterator.
+     */
+    @Override
+    public Iterator<IWarrior> iterator() {
+        return firstAliveIterator();
+    }
+
+    @Override
+    public void update(EventType eventType, IWarrior unit) {
+        moveUnits();
+    }
 
     static class WarriorInArmy implements HasWarriorBehind, HasWarriorAHead , IWarrior {
         IWarrior nextWarrior;
@@ -168,12 +184,18 @@ public class Army {
         currWarrior.equipWeapon(weapon);
     }
 
+    public void moveUnits(){
+        if (warlord != null){
+            warlord.moveUnits(this);
+        }
+    }
+
     public void addUnit(IWarrior warrior){
         //Only one warload in army
-        if (warrior instanceof Warlord && warload != null){
+        if (warrior instanceof Warlord && warlord != null){
             return;
         } else if (warrior instanceof Warlord) {
-            warload = warrior;
+            warlord = (Warlord) warrior;
         }
 
         WarriorInArmy unitInArmy = new WarriorInArmy(warrior);
@@ -201,12 +223,15 @@ public class Army {
        return troops.size();
     }
 
-    public boolean hasWarload(){
-        return warload != null;
-    }
 
     private void changeSubscribeUnitsInArmy(boolean turnOn){
         for (IWarrior unit:troops) {
+            if (turnOn) {
+                unit.getEvents().subscribe(EventType.UNIT_DIED, this);
+            } else {
+                unit.getEvents().unsubscribe(EventType.UNIT_DIED, this);
+            }
+
             if (unit instanceof HasWarriorBehind warriorInArmy){
                 var nextWarrior = (HasWarriorBehind) warriorInArmy.getWarriorBehind();
                 if (nextWarrior != null && nextWarrior.getWarrior() instanceof CanHeal) {
