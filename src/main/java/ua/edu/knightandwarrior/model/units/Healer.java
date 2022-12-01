@@ -7,7 +7,6 @@ import ua.edu.knightandwarrior.service.EventType;
 public class Healer extends Warrior implements CanHeal,EventListener {
     private static final int ATTACK=0;
     private static final int HEALTH_POINTS=2;
-    private int healPointsByWeapon;
 
     public Healer() {
         super(60);
@@ -34,17 +33,8 @@ public class Healer extends Warrior implements CanHeal,EventListener {
         }
     }
 
-    @Override
-    public void equipWeapon(Weapon weapon) {
-        super.equipWeapon(weapon);
-        setHealPointsByWeapon(getHealPointsByWeapon()+weapon.getHealPowerPoints());
-    }
-
     private int getHealPointsByWeapon() {
-        return healPointsByWeapon;
+        return getWeapons().stream().mapToInt(Weapon::getHealPowerPoints).sum();
     }
 
-    private void setHealPointsByWeapon(int healPoints) {
-        this.healPointsByWeapon = healPoints;
-    }
 }

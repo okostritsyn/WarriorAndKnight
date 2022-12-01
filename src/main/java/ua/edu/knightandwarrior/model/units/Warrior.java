@@ -14,8 +14,6 @@ public class Warrior implements IWarrior {
     private final int initialHealth;
     private final EventManager events;
     private List<Weapon> weapons = new ArrayList<>();
-    private int attackByWeapon;
-    private int healthByWeapon;
 
     public Warrior() {
         this(50);
@@ -51,19 +49,11 @@ public class Warrior implements IWarrior {
     }
 
     public int getAttackByWeapon() {
-        return attackByWeapon;
+        return getWeapons().stream().mapToInt(Weapon::getAttackPoints).sum();
     }
 
     private int getHealthByWeapon() {
-        return healthByWeapon;
-    }
-
-    private void setAttackByWeapon(int attack) {
-        this.attackByWeapon = attack;
-    }
-
-    private void setHealthByWeapon(int health) {
-        this.healthByWeapon = getHealthByWeapon() + health;
+        return getWeapons().stream().mapToInt(Weapon::getHealthPoints).sum();
     }
 
     private void setHealth(int health) {
@@ -78,7 +68,6 @@ public class Warrior implements IWarrior {
         if (getInitialHealth()>getHealth()){
             events.notify(EventType.I_NEED_HEALTH,this);
         }
-
         warrior.receiveDamage(getAttack());
     }
 
@@ -91,16 +80,17 @@ public class Warrior implements IWarrior {
     }
 
     @Override
+    public List<Weapon> getWeapons() {
+        return weapons;
+    }
+
+    @Override
     public void equipWeapon(Weapon weapon) {
         if (getInitialHealth() != getHealth() || getInitialHealth() == 0) {
             return;
         }
         weapons.add(weapon);
-
-        var healthPoints = weapon.getHealthPoints();
-        setHealthByWeapon(getHealthByWeapon()+healthPoints);
-        setHealth(getHealth()+healthPoints);
-        setAttackByWeapon(getAttackByWeapon()+weapon.getAttackPoints());
+        setHealth(getHealth()+getHealthByWeapon());
     }
 
     @Override

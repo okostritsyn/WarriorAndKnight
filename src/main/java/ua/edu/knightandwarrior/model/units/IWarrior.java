@@ -3,6 +3,8 @@ package ua.edu.knightandwarrior.model.units;
 import ua.edu.knightandwarrior.model.weapons.Weapon;
 import ua.edu.knightandwarrior.service.EventManager;
 
+import java.util.List;
+
 public interface IWarrior {
     default boolean isAlive() {
         return getHealth()>getZeroHealth();
@@ -19,6 +21,8 @@ public interface IWarrior {
     void receiveDamage(int attack);
 
     void healBy(int healPoints);
+
+    List<Weapon> getWeapons();
 
     void equipWeapon(Weapon weapon);
 

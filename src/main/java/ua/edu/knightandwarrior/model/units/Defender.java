@@ -3,12 +3,15 @@ package ua.edu.knightandwarrior.model.units;
 import ua.edu.knightandwarrior.model.weapons.Weapon;
 
 public class Defender extends Warrior implements IWarrior {
-    private static final int DEFENSE=2;
+    private static final int DEFENSE = 2;
     private static final int ATTACK=3;
-    private int defenseByWeapon;
 
     public Defender() {
         super(60);
+    }
+
+    public Defender(int health) {
+        super(health);
     }
 
     @Override
@@ -28,17 +31,8 @@ public class Defender extends Warrior implements IWarrior {
         super.receiveDamage(Math.max(0,attack-getDefense()));
     }
 
-    @Override
-    public void equipWeapon(Weapon weapon) {
-        super.equipWeapon(weapon);
-        setDefenseByWeapon(getDefenseByWeapon()+weapon.getDefensePoints());
-    }
-
     private int getDefenseByWeapon() {
-        return defenseByWeapon;
+        return getWeapons().stream().mapToInt(Weapon::getDefensePoints).sum();
     }
 
-    private void setDefenseByWeapon(int defensePoints) {
-        this.defenseByWeapon = defensePoints;
-    }
 }

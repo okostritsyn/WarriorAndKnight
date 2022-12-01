@@ -2,6 +2,7 @@ package ua.edu.knightandwarrior.model;
 
 import ua.edu.knightandwarrior.model.units.CanHeal;
 import ua.edu.knightandwarrior.model.units.IWarrior;
+import ua.edu.knightandwarrior.model.units.Warlord;
 import ua.edu.knightandwarrior.model.weapons.Weapon;
 import ua.edu.knightandwarrior.service.EventManager;
 import ua.edu.knightandwarrior.service.EventType;
@@ -12,6 +13,8 @@ import java.util.function.Supplier;
 public class Army {
     List<IWarrior> troops = new ArrayList<>();
     WarriorInArmy tail;
+    IWarrior warload;
+
     ArmyType type = ArmyType.TROOP;
 
     static class WarriorInArmy implements HasWarriorBehind, HasWarriorAHead , IWarrior {
@@ -74,6 +77,11 @@ public class Army {
         @Override
         public void healBy(int healPoints) {
             warrior.healBy(healPoints);
+        }
+
+        @Override
+        public List<Weapon> getWeapons() {
+            return warrior.getWeapons();
         }
 
         @Override
@@ -154,16 +162,20 @@ public class Army {
         }
     }
 
-    public void equipWarriorAtPosition(int position, Weapon weapon) throws IndexOutOfBoundsException{
-        if (position>=size()){
-            throw new IndexOutOfBoundsException();
-        }
+    public void equipWarriorAtPosition(int position, Weapon weapon){
 
         var currWarrior = troops.get(position);
         currWarrior.equipWeapon(weapon);
     }
 
     public void addUnit(IWarrior warrior){
+        //Only one warload in army
+        if (warrior instanceof Warlord && warload != null){
+            return;
+        } else if (warrior instanceof Warlord) {
+            warload = warrior;
+        }
+
         WarriorInArmy unitInArmy = new WarriorInArmy(warrior);
         if (tail != null){
             tail.setWarriorBehind(unitInArmy);
@@ -187,6 +199,10 @@ public class Army {
 
     public int size(){
        return troops.size();
+    }
+
+    public boolean hasWarload(){
+        return warload != null;
     }
 
     private void changeSubscribeUnitsInArmy(boolean turnOn){
