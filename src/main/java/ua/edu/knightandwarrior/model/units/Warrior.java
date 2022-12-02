@@ -9,7 +9,6 @@ import java.util.List;
 
 public class Warrior implements IWarrior {
     private static final int ATTACK=5;
-    private static final int ZERO_HEALTH=0;
     private int health ;
     private final int initialHealth;
     private final EventManager events;
@@ -21,7 +20,7 @@ public class Warrior implements IWarrior {
 
     public Warrior(int health) {
         initialHealth = this.health = health;
-        this.events = new EventManager(EventType.I_NEED_HEALTH,EventType.UNIT_DIED);
+        this.events = new EventManager(EventType.I_NEED_HEALTH);
     }
 
     @Override
@@ -32,11 +31,6 @@ public class Warrior implements IWarrior {
     @Override
     public int getHealth() {
         return health;
-    }
-
-    @Override
-    public int getZeroHealth() {
-        return ZERO_HEALTH;
     }
 
     @Override
@@ -58,15 +52,12 @@ public class Warrior implements IWarrior {
 
     private void setHealth(int health) {
         this.health = Math.min(getInitialHealth(),health);
-        if (getHealth() <= 0){
-            events.notify(EventType.UNIT_DIED,this);
-        }
     }
 
     @Override
     public void attack(IWarrior warrior) {
         if (getInitialHealth()>getHealth()){
-            events.notify(EventType.I_NEED_HEALTH,this);
+            getEvents().notify(EventType.I_NEED_HEALTH,this);
         }
         warrior.receiveDamage(getAttack());
     }

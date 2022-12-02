@@ -28,7 +28,7 @@ public class Healer extends Warrior implements CanHeal,EventListener {
 
     @Override
     public void update(EventType eventType, IWarrior unit) {
-        if(eventType == EventType.I_NEED_HEALTH && !(unit instanceof CanHeal)){
+        if(this.isAlive() && eventType == EventType.I_NEED_HEALTH && !(unit instanceof CanHeal)){
             heal(unit,getHealthPoints());
         }
     }

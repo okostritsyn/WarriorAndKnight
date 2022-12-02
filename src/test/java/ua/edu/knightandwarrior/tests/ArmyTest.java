@@ -26,6 +26,60 @@ class ArmyTest {
         assertEquals(expected,status);
     }
 
+    static List<Arguments> testTwoArmiesStraightFight(){
+        return List.of(
+                arguments(new Army()
+                                .addUnits(Lancer::new, 5)
+                                .addUnits(Vampire::new, 3)
+                                .addUnits(Warrior::new, 4)
+                                .addUnits(Defender::new, 2),
+                        new Army()
+                                .addUnits(Warrior::new, 4)
+                                .addUnits(Defender::new, 4)
+                                .addUnits(Vampire::new, 6)
+                                .addUnits(Lancer::new, 5),
+                        false),
+                arguments(new Army()
+                                .addUnits(Lancer::new, 7)
+                                .addUnits(Vampire::new, 3)
+                                .addUnits(Warrior::new, 4)
+                                .addUnits(Defender::new, 2),
+                        new Army()
+                                .addUnits(Warrior::new, 4)
+                                .addUnits(Defender::new, 4)
+                                .addUnits(Vampire::new, 6)
+                                .addUnits(Lancer::new, 4),
+                        true),
+                arguments(new Army()
+                                .addUnits(Lancer::new, 7)
+                                .addUnits(Vampire::new, 3)
+                                .addUnits(Healer::new, 1)
+                                .addUnits(Warrior::new, 4)
+                                .addUnits(Healer::new, 1)
+                                .addUnits(Defender::new, 2),
+                        new Army()
+                                .addUnits(Warrior::new, 4)
+                                .addUnits(Defender::new, 4)
+                                .addUnits(Healer::new, 1)
+                                .addUnits(Vampire::new, 6)
+                                .addUnits(Lancer::new, 4),
+                        false),
+                arguments(new Army()
+                                .addUnits(Lancer::new, 4)
+                                .addUnits(Warrior::new, 3)
+                                .addUnits(Healer::new, 1)
+                                .addUnits(Warrior::new, 4)
+                                .addUnits(Healer::new, 1)
+                                .addUnits(Knight::new, 2),
+                        new Army()
+                                .addUnits(Warrior::new, 4)
+                                .addUnits(Defender::new, 4)
+                                .addUnits(Healer::new, 1)
+                                .addUnits(Vampire::new, 2)
+                                .addUnits(Lancer::new, 4),
+                        true));
+    }
+
     @ParameterizedTest(name = "{index}. Fight {0} fight against {1}, expected result = {2}")
     @MethodSource
     @DisplayName("Two armies fight")
@@ -174,61 +228,29 @@ class ArmyTest {
                                 .addUnits(Healer::new, 1)
                                 .addUnits(Vampire::new, 6)
                                 .addUnits(Lancer::new, 4),
-                        true));
-    }
-
-    static List<Arguments> testTwoArmiesStraightFight(){
-        return List.of(
-                arguments(new Army()
-                                .addUnits(Lancer::new, 5)
-                                .addUnits(Vampire::new, 3)
-                                .addUnits(Warrior::new, 4)
-                                .addUnits(Defender::new, 2),
-                        new Army()
-                                .addUnits(Warrior::new, 4)
-                                .addUnits(Defender::new, 4)
-                                .addUnits(Vampire::new, 6)
-                                .addUnits(Lancer::new, 5),
-                        false),
-                arguments(new Army()
-                                .addUnits(Lancer::new, 7)
-                                .addUnits(Vampire::new, 3)
-                                .addUnits(Warrior::new, 4)
-                                .addUnits(Defender::new, 2),
-                        new Army()
-                                .addUnits(Warrior::new, 4)
-                                .addUnits(Defender::new, 4)
-                                .addUnits(Vampire::new, 6)
-                                .addUnits(Lancer::new, 4),
                         true),
                 arguments(new Army()
-                                .addUnits(Lancer::new, 7)
-                                .addUnits(Vampire::new, 3)
-                                .addUnits(Healer::new, 1)
-                                .addUnits(Warrior::new, 4)
-                                .addUnits(Healer::new, 1)
-                                .addUnits(Defender::new, 2),
+                                .addUnits(Warlord::new, 1)
+                                .addUnits(Warrior::new, 2)
+                                .addUnits(Lancer::new, 2)
+                                .addUnits(Healer::new, 2),
                         new Army()
-                                .addUnits(Warrior::new, 4)
-                                .addUnits(Defender::new, 4)
-                                .addUnits(Healer::new, 1)
-                                .addUnits(Vampire::new, 6)
-                                .addUnits(Lancer::new, 4),
-                        false),
-                arguments(new Army()
-                                .addUnits(Lancer::new, 4)
-                                .addUnits(Warrior::new, 3)
-                                .addUnits(Healer::new, 1)
-                                .addUnits(Warrior::new, 4)
-                                .addUnits(Healer::new, 1)
+                                .addUnits(Warlord::new, 1)
+                                .addUnits(Vampire::new, 1)
+                                .addUnits(Healer::new, 2)
                                 .addUnits(Knight::new, 2),
+                        true),
+                arguments(new Army()
+                                .addUnits(Warrior::new, 2)
+                                .addUnits(Lancer::new, 2)
+                                .addUnits(Defender::new, 1)
+                                .addUnits(Warlord::new, 3),
                         new Army()
-                                .addUnits(Warrior::new, 4)
-                                .addUnits(Defender::new, 4)
-                                .addUnits(Healer::new, 1)
-                                .addUnits(Vampire::new, 2)
-                                .addUnits(Lancer::new, 4),
-                        true));
+                                .addUnits(Warlord::new, 2)
+                                .addUnits(Vampire::new, 1)
+                                .addUnits(Healer::new, 5)
+                                .addUnits(Knight::new, 2),
+                        false));
     }
 
     @ParameterizedTest(name = "{index}. Fight {0} fight against {1}, expected result = {2}")
@@ -284,6 +306,19 @@ class ArmyTest {
                                 .addUnits(Defender::new, 2),
                         new Weapon[]{new Weapon(-20, 6, 1, 40, -2),new Weapon(-20, 6, 1, 40, -2),new Weapon(20, -2, 2, -55, 3)},
                         new Weapon[]{new Weapon(-20, 6, 1, 40, -2),new Weapon(20, -2, 2, -55, 3),new Weapon(20, -2, 2, -55, 3)},
+                        true),
+                arguments(new Army()
+                                .addUnits(Warrior::new, 2)
+                                .addUnits(Lancer::new, 3)
+                                .addUnits(Defender::new, 1)
+                                .addUnits(Warlord::new, 4),
+                        new Army()
+                                .addUnits(Warlord::new, 1)
+                                .addUnits(Vampire::new, 1)
+                                .addUnits(Rookie::new, 1)
+                                .addUnits(Knight::new, 1),
+                        new Weapon[]{new Sword()},
+                        new Weapon[]{new Shield()},
                         true));
     }
 
@@ -343,6 +378,19 @@ class ArmyTest {
                                 .addUnits(Healer::new, 1),
                         new Weapon[]{new Katana(),new Katana(),new Katana()},
                         new Weapon[]{new MagicWand(),new MagicWand()},
+                        false),
+                arguments(new Army()
+                                .addUnits(Warrior::new, 2)
+                                .addUnits(Lancer::new, 3)
+                                .addUnits(Defender::new, 1)
+                                .addUnits(Warlord::new, 1),
+                        new Army()
+                                .addUnits(Warlord::new, 5)
+                                .addUnits(Vampire::new, 1)
+                                .addUnits(Rookie::new, 1)
+                                .addUnits(Knight::new, 1),
+                        new Weapon[]{new Sword()},
+                        new Weapon[]{new Shield()},
                         false));
     }
 

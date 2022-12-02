@@ -38,15 +38,18 @@ public class Main {
         myArmy = new Army();
         myArmy.addUnits(Warrior::new, 1);
         myArmy.addUnits(Healer::new, 1);
+        myArmy.addUnits(Healer::new, 1);
         myArmy.addUnits(Defender::new, 1);
         myArmy.addUnits(Healer::new, 1);
         myArmy.addUnits(Knight::new, 1);
+        myArmy.addUnits(Warlord::new, 1);
 
         enemyArmy = new Army();
         enemyArmy.addUnits(Lancer::new, 1);
         enemyArmy.addUnits(Warrior::new, 4);
+        enemyArmy.addUnits(Warlord::new, 1);
 
-        System.out.println("Fight myArmy vs enemyArmy "+Battle.straightFight(myArmy, enemyArmy));
+        System.out.println("Fight myArmy vs enemyArmy "+Battle.fight(myArmy, enemyArmy));
 
         Weapon sword = new Sword();
         System.out.println("sword.getDefense()" + sword.getDefensePoints());

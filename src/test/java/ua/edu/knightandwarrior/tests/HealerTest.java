@@ -24,6 +24,8 @@ class HealerTest {
         Army enemyArmy = new Army();
         enemyArmy.addUnits(Lancer::new, 1);
         enemyArmy.addUnits(Warrior::new, 4);
+        myArmy.addUnits(Defender::new, 1);
+
 
         var test = Battle.fight(myArmy, enemyArmy);
         //then

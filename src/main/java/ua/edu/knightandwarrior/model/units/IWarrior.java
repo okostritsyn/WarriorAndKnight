@@ -10,7 +10,7 @@ public interface IWarrior {
         return getHealth()>getZeroHealth();
     }
 
-    int getZeroHealth();
+    default int getZeroHealth() { return  0; }
 
     int getHealth();
 
