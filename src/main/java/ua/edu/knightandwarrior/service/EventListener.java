@@ -1,6 +1,5 @@
 package ua.edu.knightandwarrior.service;
 
-import ua.edu.knightandwarrior.model.Army;
 import ua.edu.knightandwarrior.model.units.IWarrior;
 
 public interface EventListener {

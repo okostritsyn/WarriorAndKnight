@@ -82,7 +82,7 @@ public class Army implements Iterable<IWarrior> {
         public void receiveDamage(int attack) {
             warrior.receiveDamage(attack);
 
-            if (!isAlive()) {
+            if (!this.isAlive()) {
                 getEvents().notify(EventType.UNIT_DIED, this);
             }
         }
@@ -101,7 +101,7 @@ public class Army implements Iterable<IWarrior> {
         public void equipWeapon(Weapon weapon) {
             warrior.equipWeapon(weapon);
 
-            if (!isAlive()) {
+            if (!this.isAlive()) {
                 getEvents().notify(EventType.UNIT_DIED, this);
             }
         }
@@ -199,7 +199,6 @@ public class Army implements Iterable<IWarrior> {
             if (!untilUnitDies) nextAlive = findNewAliveWarrior();
 
             return currWarrior;
-            //return type == ArmyType.TROOP ? currWarrior : ((WarriorInArmy) currWarrior).getWarrior();
         }
     }
 
@@ -209,7 +208,7 @@ public class Army implements Iterable<IWarrior> {
         currWarrior.equipWeapon(weapon);
     }
 
-    public void moveUnits() {
+    public boolean moveUnits() {
         if (warlord != null) {
             var newArmy = warlord.moveUnits(this);
 
@@ -229,11 +228,14 @@ public class Army implements Iterable<IWarrior> {
             deadWarriors.forEach(el->addUnit(((IWarriorInArmy) el).getWarrior()));
 
             initArmy(type);
+
+            return true;
         }
+        return false;
     }
 
     public void addUnit(IWarrior warrior) {
-        //Only one warload in army
+        //Only one warlord in army
         if (warrior instanceof Warlord && warlord != null) {
             return;
         } else if (warrior instanceof Warlord currWarrior) {
@@ -241,10 +243,11 @@ public class Army implements Iterable<IWarrior> {
         }
 
         WarriorInArmy unitInArmy = new WarriorInArmy(warrior);
-        if (tail != null) {
+        if (tail != null && type == ArmyType.TROOP) {
             tail.setWarriorBehind(unitInArmy);
             unitInArmy.setPreviousWarrior(tail);
         }
+
         tail = unitInArmy;
         troops.add(unitInArmy);
     }
@@ -261,10 +264,14 @@ public class Army implements Iterable<IWarrior> {
             this.type = type;
             changeSubscribeUnitsInArmy(false);
 
-            for (IWarrior currUnit:troops) {
-                ((WarriorInArmy) currUnit).setPreviousWarrior(null);
-                ((WarriorInArmy) currUnit).setWarriorBehind(null);
-            }
+            var warriors = troops.stream()
+                    .toList();
+
+            troops.clear();
+            tail = null;
+            warlord = null;
+
+            warriors.forEach(el->addUnit(((IWarriorInArmy) el).getWarrior()));
         }
         changeSubscribeUnitsInArmy(this.type == ArmyType.TROOP);
     }

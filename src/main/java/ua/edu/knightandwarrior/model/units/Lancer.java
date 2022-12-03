@@ -4,7 +4,7 @@ import ua.edu.knightandwarrior.model.HasWarriorBehind;
 
 public class Lancer extends Warrior implements IWarrior {
     private static final int ATTACK=6;
-    private static final int QUANTITY_UNITS_ATTACK=2;
+    private static final int QUANTITY_UNITS_ATTACK=1;
     private static final int PIERCING_POWER=50;
 
     public Lancer() {
@@ -30,19 +30,24 @@ public class Lancer extends Warrior implements IWarrior {
         super.attack(warrior);
         var healthAfterHit = warrior.getHealth();
 
-        for (int i = 0; i < getQuantityUnitsAttack(); i++) {
+        int i = 0;
+        while(i < getQuantityUnitsAttack()) {
             if (warrior instanceof HasWarriorBehind warriorInArmy) {
                 var nextWarrior = warriorInArmy.getWarriorBehind();
-                if (nextWarrior != null) {
+                if (nextWarrior != null && nextWarrior.isAlive()) {
                     int damageToNext = (healthBeforeHit - healthAfterHit) * getPiercingPower() / 100;
                     healthBeforeHit = nextWarrior.getHealth();
                     nextWarrior.receiveDamage(damageToNext);
                     healthAfterHit = nextWarrior.getHealth();
                     warrior = nextWarrior;
-                } else {
+                } else if(nextWarrior != null) {
+                    warrior = nextWarrior;
+                    i--;
+                }else {
                     break;
                 }
             }
+            i++;
         }
     }
 }

@@ -20,6 +20,9 @@ public class Battle {
         defenderArmy.moveUnits();
         attackerArmy.moveUnits();
 
+        log.atDebug().log("Troops fight");
+        log.atDebug().log("{} vs {}",defenderArmy,attackerArmy );
+
         var it1 = defenderArmy.firstAliveIterator();
         var it2 = attackerArmy.firstAliveIterator();
 
@@ -27,11 +30,11 @@ public class Battle {
             var firstFighterWins = fight(it1.next(), it2.next());
 
             if (firstFighterWins) {
-                attackerArmy.moveUnits();
-                it2 = attackerArmy.firstAliveIterator();
+                var status = attackerArmy.moveUnits();
+                if (status) it2 = attackerArmy.firstAliveIterator();
             } else {
-                defenderArmy.moveUnits();
-                it1 = defenderArmy.firstAliveIterator();
+                var status =defenderArmy.moveUnits();
+                if (status) it1 = defenderArmy.firstAliveIterator();
             }
         }
 
@@ -57,16 +60,7 @@ public class Battle {
             if (!it2.hasNext()) return true;
 
             while (it1.hasNext() && it2.hasNext()) {
-                var firstFighterWins = fight(it1.next(), it2.next());
-
-                if (firstFighterWins) {
-                    attackerArmy.moveUnits();
-                    it2 = attackerArmy.firstAliveIterator();
-                } else {
-                    defenderArmy.moveUnits();
-                    it1 = defenderArmy.firstAliveIterator();
-                }
-
+                fight(it1.next(), it2.next());
                 maxRounds --;
             }
 
@@ -90,9 +84,9 @@ public class Battle {
             if(attacker.isAlive()){
                 attacker.attack(defender);
             }
-            //log.atDebug().log("  {} vs {}",defender,attacker );
+            log.atDebug().log("  {} vs {}",defender,attacker );
         }
-       // log.atDebug().log(" Fight after {} vs {}",defender,attacker );
+        log.atDebug().log(" Fight after {} vs {}",defender,attacker );
 
         return defender.isAlive();
     }

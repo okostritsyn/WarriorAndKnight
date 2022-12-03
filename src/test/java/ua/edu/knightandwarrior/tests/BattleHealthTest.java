@@ -30,7 +30,7 @@ class BattleHealthTest {
 
     static List<Arguments> testTwoWarriorsFight(){
         return List.of(
-                arguments(new Defender(), new Rookie(),60, -1),
+                arguments(new Defender(), new Rookie(),60, 0),
                 arguments(new Warrior(), new Knight(),-6, 10),
                 arguments(new Knight(), new Warrior(),15, -6),
                 arguments(new Warrior(), new Defender(),-1, 9),
