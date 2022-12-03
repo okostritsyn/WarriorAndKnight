@@ -1,9 +1,11 @@
 package ua.edu.knightandwarrior.service;
 
+import lombok.extern.slf4j.Slf4j;
 import ua.edu.knightandwarrior.model.Army;
 import ua.edu.knightandwarrior.model.ArmyType;
 import ua.edu.knightandwarrior.model.units.IWarrior;
 
+@Slf4j
 public class Battle {
     private Battle() {
 
@@ -28,6 +30,10 @@ public class Battle {
     public static boolean straightFight(Army defenderArmy, Army attackerArmy){
         attackerArmy.initArmy(ArmyType.LINE);
         defenderArmy.initArmy(ArmyType.LINE);
+
+        log.atDebug().log("Straight fight");
+        log.atDebug().log("{} vs {}",defenderArmy,attackerArmy );
+
         var maxRounds = attackerArmy.size()+ defenderArmy.size();
         while(maxRounds > 0){
             var it1 = defenderArmy.firstAliveIterator();
@@ -45,6 +51,7 @@ public class Battle {
     }
 
     public static boolean fight(IWarrior defender, IWarrior attacker){
+        log.atDebug().log(" Fight before {} vs {}",defender,attacker );
 
         if (defender.getAttack()==0){
             defender.killUnit();
@@ -59,6 +66,8 @@ public class Battle {
                 attacker.attack(defender);
             }
         }
+        log.atDebug().log(" Fight after {} vs {}",defender,attacker );
+
         return defender.isAlive();
     }
 }
