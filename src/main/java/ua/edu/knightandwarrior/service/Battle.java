@@ -20,8 +20,8 @@ public class Battle {
         defenderArmy.moveUnits();
         attackerArmy.moveUnits();
 
-        log.atDebug().log("Troops fight");
-        log.atDebug().log("{} vs {}",defenderArmy,attackerArmy );
+        log.atInfo().log("Troops fight");
+        log.atInfo().log("{} vs {}",defenderArmy,attackerArmy );
 
         var it1 = defenderArmy.firstAliveIterator();
         var it2 = attackerArmy.firstAliveIterator();
@@ -38,6 +38,8 @@ public class Battle {
             }
         }
 
+        log.atInfo().log("Troops fight ends. Winner is "+ (it1.hasNext()?defenderArmy.toString():attackerArmy.toString()));
+
         return it1.hasNext();
     }
 
@@ -45,8 +47,8 @@ public class Battle {
         attackerArmy.initArmy(ArmyType.LINE);
         defenderArmy.initArmy(ArmyType.LINE);
 
-        log.atDebug().log("Straight fight");
-        log.atDebug().log("{} vs {}",defenderArmy,attackerArmy );
+        log.atInfo().log("Straight fight");
+        log.atInfo().log("{} vs {}",defenderArmy,attackerArmy );
 
         defenderArmy.moveUnits();
         attackerArmy.moveUnits();
@@ -65,12 +67,14 @@ public class Battle {
             }
 
         }
+        log.atInfo().log("Straight fight ends. Winner is "+ (defenderArmy.isAlive()?defenderArmy.toString():attackerArmy.toString()));
+
         return defenderArmy.isAlive();
     }
 
     public static boolean fight(IWarrior defender, IWarrior attacker){
 
-        log.atDebug().log(" Fight before {} vs {}",defender,attacker );
+        log.atInfo().log(" Fight before {} vs {}",defender,attacker );
 
         if (defender.getAttack()==0){
             defender.killUnit();
@@ -84,9 +88,9 @@ public class Battle {
             if(attacker.isAlive()){
                 attacker.attack(defender);
             }
-            log.atDebug().log("  {} vs {}",defender,attacker );
+            log.atInfo().log("  {} vs {}",defender,attacker );
         }
-        log.atDebug().log(" Fight after {} vs {}",defender,attacker );
+        log.atInfo().log(" Fight after {} vs {}",defender,attacker );
 
         return defender.isAlive();
     }

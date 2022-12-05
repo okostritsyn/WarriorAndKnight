@@ -1,13 +1,9 @@
 package ua.edu.knightandwarrior.model.weapons;
 
-public class Shield extends Weapon{
-    public Shield(){
-        super(20,-1,2,0,0,0,0);
-    }
-
+public class SuperSpear extends Weapon {
     @Override
     public String toString() {
-        return "Shield {" +
+        return  "Super spear {" +
                 "" + getHealthPoints() +
                 "," + getAttackPoints() +
                 "," + getDefensePoints() +
@@ -16,5 +12,9 @@ public class Shield extends Weapon{
                 "," + getPiercingPower() +
                 "," + getQuantityUnitsAttack() +
                 '}';
+    }
+
+    public SuperSpear(){
+        super(5,0,0,0,0,30,1);
     }
 }

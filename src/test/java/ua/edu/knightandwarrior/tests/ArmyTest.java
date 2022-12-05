@@ -304,8 +304,8 @@ class ArmyTest {
                         new Army()
                                 .addUnits(Warrior::new, 1)
                                 .addUnits(Defender::new, 2),
-                        new Weapon[]{new Weapon(-20, 6, 1, 40, -2),new Weapon(-20, 6, 1, 40, -2),new Weapon(20, -2, 2, -55, 3)},
-                        new Weapon[]{new Weapon(-20, 6, 1, 40, -2),new Weapon(20, -2, 2, -55, 3),new Weapon(20, -2, 2, -55, 3)},
+                        new Weapon[]{new Weapon(-20, 6, 1, 40, -2,0,0),new Weapon(-20, 6, 1, 40, -2,0,0),new Weapon(20, -2, 2, -55, 3,0,0)},
+                        new Weapon[]{new Weapon(-20, 6, 1, 40, -2,0,0),new Weapon(20, -2, 2, -55, 3,0,0),new Weapon(20, -2, 2, -55, 3,0,0)},
                         true),
                 arguments(new Army()
                                 .addUnits(Warrior::new, 2)
@@ -348,8 +348,8 @@ class ArmyTest {
                         new Army()
                                 .addUnits(Warrior::new, 1)
                                 .addUnits(Defender::new, 2),
-                        new Weapon[]{new Weapon(-20, 1, 1, 40, -2),new Weapon(-20, 1, 1, 40, -2),new Weapon(20, 2, 2, -55, 3)},
-                        new Weapon[]{new Weapon(-20, 1, 1, 40, -2),new Weapon(20, 2, 2, -55, 3),new Weapon(20, 2, 2, -55, 3)},
+                        new Weapon[]{new Weapon(-20, 1, 1, 40, -2,0,0),new Weapon(-20, 1, 1, 40, -2,0,0),new Weapon(20, 2, 2, -55, 3,0,0)},
+                        new Weapon[]{new Weapon(-20, 1, 1, 40, -2,0,0),new Weapon(20, 2, 2, -55, 3,0,0),new Weapon(20, 2, 2, -55, 3,0,0)},
                         false),
                 arguments(
                         new Army()

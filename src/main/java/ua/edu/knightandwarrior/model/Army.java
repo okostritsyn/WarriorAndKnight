@@ -18,6 +18,11 @@ public class Army implements Iterable<IWarrior> {
     WarriorInArmy tail;
     Warlord warlord;
     ArmyType type = ArmyType.TROOP;
+    private static int numId;
+
+    public Army() {
+        numId++;
+    }
 
     /**
      * Returns an iterator over elements of type {@code T}.
@@ -88,6 +93,11 @@ public class Army implements Iterable<IWarrior> {
         }
 
         @Override
+        public void receiveDamageToUnit(int attack) {
+            warrior.receiveDamageToUnit(attack);
+        }
+
+        @Override
         public void healBy(int healPoints) {
             warrior.healBy(healPoints);
         }
@@ -112,6 +122,11 @@ public class Army implements Iterable<IWarrior> {
         }
 
         @Override
+        public int getInitialHealthByUnit() {
+            return warrior.getInitialHealthByUnit();
+        }
+
+        @Override
         public String toString() {
             return getWarrior().toString();
         }
@@ -127,6 +142,7 @@ public class Army implements Iterable<IWarrior> {
                         && warriorAHead.getWarrior().isAlive()
                         && !(warriorAHead.getWarrior() instanceof CanHeal)) {
                     warriorAHead.getWarrior().getEvents().subscribe(EventType.I_NEED_HEALTH, (ua.edu.knightandwarrior.service.EventListener) warrior);
+                log.atDebug().log(" subscribe "+warriorAHead+" on event I_NEED_HEALTH to "+warrior);
                 }
             }
         }
@@ -234,7 +250,7 @@ public class Army implements Iterable<IWarrior> {
         return false;
     }
 
-    public void addUnit(IWarrior warrior) {
+    private void addUnit(IWarrior warrior) {
         //Only one warlord in army
         if (warrior instanceof Warlord && warlord != null) {
             return;
@@ -300,8 +316,9 @@ public class Army implements Iterable<IWarrior> {
     private void changeSubscribeUnitInArmy(IWarrior subscriber, IWarrior listener, EventType type, boolean turnOn) {
         if (turnOn) {
             subscriber.getEvents().subscribe(type, (ua.edu.knightandwarrior.service.EventListener) listener);
+            log.atDebug().log(" subscribe "+subscriber+" on event "+type+" to "+listener);
         } else {
-            subscriber.getEvents().unsubscribe(type, (ua.edu.knightandwarrior.service.EventListener) listener);
+            log.atDebug().log(" unsubscribe "+subscriber+" from event "+type+" listener "+listener);
         }
     }
 
@@ -330,6 +347,7 @@ public class Army implements Iterable<IWarrior> {
     @Override
     public String toString() {
         return getClass().getSimpleName() +
+                " #"+numId+
                 " of " + getContentOfArmy();
     }
 }

@@ -35,7 +35,7 @@ class WeaponTest {
     }
 
     static List<Arguments> testTwoWarriorsFight(){
-        return List.of(arguments(new Warrior(), new Vampire(), new Weapon[]{new Weapon(-10, 5, 0, 40, 0)},new Weapon[]{new Sword()}, true),
+        return List.of(arguments(new Warrior(), new Vampire(), new Weapon[]{new Weapon(-10, 5, 0, 40, 0,0,0)},new Weapon[]{new Sword()}, true),
                 arguments(new Defender(), new Lancer(), new Weapon[]{new Shield()},new Weapon[]{new GreatAxe()}, false),
                 arguments(new Healer(), new Knight(), new Weapon[]{new MagicWand()},new Weapon[]{new Katana()}, false),
                 arguments(new Defender(), new Vampire(), new Weapon[]{new Shield(),new MagicWand()},new Weapon[]{new Shield(),new Katana()}, false));
