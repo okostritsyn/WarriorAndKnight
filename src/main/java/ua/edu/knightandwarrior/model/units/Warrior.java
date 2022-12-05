@@ -1,5 +1,6 @@
 package ua.edu.knightandwarrior.model.units;
 
+import lombok.extern.slf4j.Slf4j;
 import ua.edu.knightandwarrior.model.weapons.Weapon;
 import ua.edu.knightandwarrior.service.EventManager;
 import ua.edu.knightandwarrior.service.EventType;
@@ -7,26 +8,35 @@ import ua.edu.knightandwarrior.service.EventType;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class Warrior implements IWarrior {
     private static final int ATTACK=5;
     private int health ;
-    private final int initialHealth;
+    private final int initialHealthByUnit;
     private final EventManager events;
     private final List<Weapon> weapons = new ArrayList<>();
+    private static int numId;
 
     public Warrior() {
         this(50);
     }
 
     public Warrior(int health) {
-        initialHealth = this.health = health;
+        initialHealthByUnit = this.health = health;
         this.events = new EventManager(EventType.I_NEED_HEALTH);
+        numId++;
+    }
+
+    @Override
+    public int getInitialHealthByUnit() {
+        return initialHealthByUnit;
     }
 
     @Override
     public EventManager getEvents() {
         return events;
     }
+
 
     @Override
     public int getHealth() {
@@ -38,16 +48,9 @@ public class Warrior implements IWarrior {
         return Math.max(0,ATTACK+getAttackByWeapon());
     }
 
-    private int getInitialHealth() {
-        return Math.max(0,initialHealth + getHealthByWeapon());
-    }
 
     public int getAttackByWeapon() {
         return getWeapons().stream().mapToInt(Weapon::getAttackPoints).sum();
-    }
-
-    private int getHealthByWeapon() {
-        return getWeapons().stream().mapToInt(Weapon::getHealthPoints).sum();
     }
 
     private void setHealth(int health) {
@@ -55,19 +58,14 @@ public class Warrior implements IWarrior {
     }
 
     @Override
-    public void attack(IWarrior warrior) {
-        if (getInitialHealth()>getHealth()){
-            getEvents().notify(EventType.I_NEED_HEALTH,this);
-        }
-        warrior.receiveDamage(getAttack());
-    }
-
-    public void receiveDamage(int attack) {
+    public void receiveDamageToUnit(int attack) {
         setHealth(getHealth() - attack);
     }
 
+    @Override
     public void healBy(int healPoints) {
         setHealth(getHealth() + healPoints);
+        log.atDebug().log(" heal unit "+this+" to "+healPoints+" health points");
     }
 
     @Override
@@ -77,16 +75,18 @@ public class Warrior implements IWarrior {
 
     @Override
     public void equipWeapon(Weapon weapon) {
-        if (getInitialHealth() != getHealth() || getInitialHealth() == 0) {
-            return;
-        }
         weapons.add(weapon);
-        setHealth(getHealth()+getHealthByWeapon());
+        setHealth(getHealth()+weapon.getHealthPoints());
     }
 
     @Override
     public String toString() {
+        StringBuilder weaponString = new StringBuilder();
+        getWeapons().forEach(weaponString::append);
+        String weaponsWarrior = getWeapons().isEmpty()?"":" weapons "+weaponString;
         return getClass().getSimpleName() +
-                " health " + getHealth();
+                " #"+numId+" "+
+                getHealth()+"hp " +
+                weaponsWarrior;
     }
 }

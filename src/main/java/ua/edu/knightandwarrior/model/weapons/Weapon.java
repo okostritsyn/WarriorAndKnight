@@ -13,5 +13,19 @@ public class Weapon {
     private int defensePoints;
     private int vampirismPoints;
     private int healPowerPoints;
+    private int piercingPower;
+    private int quantityUnitsAttack;
 
+    @Override
+    public String toString() {
+        return "Weapon {" +
+                "" + getHealthPoints() +
+                "," + getAttackPoints() +
+                "," + getDefensePoints() +
+                "," + getVampirismPoints() +
+                "," + getHealPowerPoints() +
+                "," + getPiercingPower() +
+                "," + getQuantityUnitsAttack() +
+                '}';
+    }
 }

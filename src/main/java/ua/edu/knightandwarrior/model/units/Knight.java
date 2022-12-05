@@ -1,6 +1,6 @@
 package ua.edu.knightandwarrior.model.units;
 
-public class Knight extends Warrior implements IWarrior {
+public class Knight extends Warrior {
     private static final int ATTACK=7;
 
     @Override

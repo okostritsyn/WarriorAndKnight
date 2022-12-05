@@ -1,12 +1,8 @@
 package ua.edu.knightandwarrior.model.units;
 
-import ua.edu.knightandwarrior.model.weapons.Weapon;
-import ua.edu.knightandwarrior.service.EventListener;
-import ua.edu.knightandwarrior.service.EventType;
-
-public class Healer extends Warrior implements CanHeal,EventListener {
+public class Healer extends Warrior implements CanHeal {
     private static final int ATTACK=0;
-    private static final int HEALTH_POINTS=2;
+    private static final int HEALTH_POINTS_BY_UNIT=2;
 
     public Healer() {
         super(60);
@@ -17,24 +13,8 @@ public class Healer extends Warrior implements CanHeal,EventListener {
         return ATTACK;
     }
 
-    public int getHealthPoints() {
-        return Math.max(0,HEALTH_POINTS + getHealPointsByWeapon()) ;
-    }
-
     @Override
-    public void heal(IWarrior unit,int healthPoints){
-        unit.healBy(healthPoints);
+    public int getHealthPointsByUnit() {
+        return HEALTH_POINTS_BY_UNIT;
     }
-
-    @Override
-    public void update(EventType eventType, IWarrior unit) {
-        if(this.isAlive() && eventType == EventType.I_NEED_HEALTH && !(unit instanceof CanHeal)){
-            heal(unit,getHealthPoints());
-        }
-    }
-
-    private int getHealPointsByWeapon() {
-        return getWeapons().stream().mapToInt(Weapon::getHealPowerPoints).sum();
-    }
-
 }
