@@ -12,7 +12,7 @@ public class Battle {
 
     }
 
-    public static boolean fight(Army defenderArmy, Army attackerArmy){
+    public static boolean fight(Army defenderArmy, Army attackerArmy) {
 
         attackerArmy.initArmy(ArmyType.TROOP);
         defenderArmy.initArmy(ArmyType.TROOP);
@@ -21,7 +21,7 @@ public class Battle {
         attackerArmy.moveUnits();
 
         log.atInfo().log("Troops fight");
-        log.atInfo().log("{} vs {}",defenderArmy,attackerArmy );
+        log.atInfo().log("{} vs {}", defenderArmy, attackerArmy);
 
         var it1 = defenderArmy.firstAliveIterator();
         var it2 = attackerArmy.firstAliveIterator();
@@ -33,64 +33,68 @@ public class Battle {
                 var status = attackerArmy.moveUnits();
                 if (status) it2 = attackerArmy.firstAliveIterator();
             } else {
-                var status =defenderArmy.moveUnits();
+                var status = defenderArmy.moveUnits();
                 if (status) it1 = defenderArmy.firstAliveIterator();
             }
         }
 
-        log.atInfo().log("Troops fight ends. Winner is "+ (it1.hasNext()?defenderArmy.toString():attackerArmy.toString()));
+        log.atInfo().log("Troops fight ends. Winner is " + (it1.hasNext() ? defenderArmy.toString() : attackerArmy.toString()));
 
         return it1.hasNext();
     }
 
-    public static boolean straightFight(Army defenderArmy, Army attackerArmy){
+    public static boolean straightFight(Army defenderArmy, Army attackerArmy) {
         attackerArmy.initArmy(ArmyType.LINE);
         defenderArmy.initArmy(ArmyType.LINE);
 
         log.atInfo().log("Straight fight");
-        log.atInfo().log("{} vs {}",defenderArmy,attackerArmy );
+        log.atInfo().log("{} vs {}", defenderArmy, attackerArmy);
 
         defenderArmy.moveUnits();
         attackerArmy.moveUnits();
 
-        var maxRounds = attackerArmy.size()+ defenderArmy.size();
-        while(maxRounds > 0){
+        boolean status = defenderArmy.isAlive();
+
+        var maxRounds = attackerArmy.size() + defenderArmy.size();
+        while (maxRounds > 0) {
             var it1 = defenderArmy.firstAliveIterator();
             var it2 = attackerArmy.firstAliveIterator();
 
-            if (!it1.hasNext()) return false;
-            if (!it2.hasNext()) return true;
+            if (!it1.hasNext()) status = false;
+            if (!it2.hasNext()) status = true;
+
+            if (!it1.hasNext() || !it2.hasNext()) break;
 
             while (it1.hasNext() && it2.hasNext()) {
                 fight(it1.next(), it2.next());
-                maxRounds --;
+                maxRounds--;
             }
 
         }
-        log.atInfo().log("Straight fight ends. Winner is "+ (defenderArmy.isAlive()?defenderArmy.toString():attackerArmy.toString()));
+        log.atInfo().log("Straight fight ends. Winner is " + (defenderArmy.isAlive() ? defenderArmy.toString() : attackerArmy.toString()));
 
-        return defenderArmy.isAlive();
+        return status;
     }
 
-    public static boolean fight(IWarrior defender, IWarrior attacker){
+    public static boolean fight(IWarrior defender, IWarrior attacker) {
 
-        log.atInfo().log(" Fight before {} vs {}",defender,attacker );
+        log.atInfo().log(" Fight before {} vs {}", defender, attacker);
 
-        if (defender.getAttack()==0){
+        if (defender.getAttack() == 0) {
             defender.killUnit();
         }
-        if (attacker.getAttack()==0){
+        if (attacker.getAttack() == 0) {
             attacker.killUnit();
         }
 
         while (defender.isAlive() && attacker.isAlive()) {
             defender.attack(attacker);
-            if(attacker.isAlive()){
+            if (attacker.isAlive()) {
                 attacker.attack(defender);
             }
-            log.atInfo().log("  {} vs {}",defender,attacker );
+            log.atInfo().log("  {} vs {}", defender, attacker);
         }
-        log.atInfo().log(" Fight after {} vs {}",defender,attacker );
+        log.atInfo().log(" Fight after {} vs {}", defender, attacker);
 
         return defender.isAlive();
     }
