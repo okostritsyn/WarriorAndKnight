@@ -14,7 +14,7 @@ public interface CanLancer extends IWarrior {
     }
 
     private int getPiercingPowerByWeapon() {
-        return getWeapons().stream().mapToInt(Weapon::getPiercingPower).sum();
+        return Math.min(100,getWeapons().stream().mapToInt(Weapon::getPiercingPower).sum());
     }
 
     default int getQuantityUnitsAttack() {

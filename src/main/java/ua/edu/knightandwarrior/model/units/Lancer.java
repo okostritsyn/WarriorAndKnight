@@ -24,6 +24,6 @@ public class Lancer extends Warrior implements CanLancer {
 
     @Override
     public int getPiercingPowerByUnit() {
-        return PIERCING_POWER_BY_UNIT;
+        return Math.min(100,PIERCING_POWER_BY_UNIT);
     }
 }
