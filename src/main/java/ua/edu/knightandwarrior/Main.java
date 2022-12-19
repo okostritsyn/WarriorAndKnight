@@ -6,6 +6,8 @@ import ua.edu.knightandwarrior.model.weapons.Sword;
 import ua.edu.knightandwarrior.model.weapons.Weapon;
 import ua.edu.knightandwarrior.service.Battle;
 
+import java.util.*;
+
 public class Main {
     public static void main(String[] args) {
         var bob = new Defender();
@@ -33,7 +35,6 @@ public class Main {
 
         System.out.println("Warrior vs vampire "+Battle.fight(new Warrior(), vampire));
         System.out.println("vampire health"+vampire.getHealth());
-
 
         myArmy = new Army();
         myArmy.addUnits(Warrior::new, 1);
